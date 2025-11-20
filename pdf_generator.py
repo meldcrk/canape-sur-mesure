@@ -195,7 +195,7 @@ def generer_pdf_devis(config, prix_details):
         ('FONTNAME', (0, total_row), (-1, total_row), 'Helvetica-Bold'),
         ('FONTSIZE', (0, total_row), (-1, total_row), 14),
         ('BACKGROUND', (0, total_row), (-1, total_row), colors.white),
-        ('TEXTCOLOR', (0, total_row), (-1, total_row), colors.whitesmoke),
+        ('TEXTCOLOR', (0, total_row), (-1, total_row), colors.black),
         ('LINEABOVE', (0, total_row), (-1, total_row), 2, colors.black),
     ])
     
