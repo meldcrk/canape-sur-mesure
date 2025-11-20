@@ -129,15 +129,6 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
             elements.append(Paragraph(email_text, section_style))
     
     elements.append(Spacer(1, 1*cm))
-    
-    # =================== LIGNE DE SÉPARATION ===================
-    line_data = [['', '']]
-    line_table = Table(line_data, colWidths=[17*cm, 0])
-    line_table.setStyle(TableStyle([
-        ('LINEABOVE', (0, 0), (-1, 0), 2, colors.HexColor('#00000')),
-    ]))
-    elements.append(line_table)
-    elements.append(Spacer(1, 0.5*cm))
 
     # =================== AJOUT DU SCHÉMA ICI ===================
     if schema_image:
@@ -160,6 +151,8 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         except Exception as e:
             print(f"Erreur lors de l'intégration de l'image : {e}")
             elements.append(Paragraph("<i>(Schéma non disponible)</i>", detail_style))
+        
+elements.append(PageBreak())
                 
     # =================== TABLEAU DES PRIX ===================
     # Titre du tableau
