@@ -90,8 +90,6 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     
     elements.append(Paragraph(type_text, section_style))
     elements.append(Paragraph(dim_text, section_style))
-    elements.append(Spacer(1, 0.5*cm))
-    
     # =================== CARACTÉRISTIQUES ===================
     profondeur_text = f"<b>Profondeur :</b> {dimensions['profondeur']}cm"
     elements.append(Paragraph(profondeur_text, section_style))
