@@ -73,7 +73,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     # =================== TITRE ===================
     titre = Paragraph("MON CANAPÉ MAROCAIN", title_style)
     elements.append(titre)
-    elements.append(Spacer(1, 0.8*cm))
+    elements.append(Spacer(0.5, 0.5*cm))
     
     # =================== DIMENSIONS DU CANAPÉ ===================
     type_canape = config['type_canape']
@@ -115,7 +115,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     accoudoir_text = f"<b>Accoudoirs :</b> {nb_accoudoirs}"
     elements.append(Paragraph(accoudoir_text, section_style))
     
-    elements.append(Spacer(1, 0.5*cm))
+    elements.append(Spacer(1, 0.2*cm))
     
     # =================== INFORMATIONS CLIENT ===================
     if config['client']['nom']:
@@ -126,7 +126,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
             email_text = f"<b>Email :</b> {config['client']['email']}"
             elements.append(Paragraph(email_text, section_style))
     
-    elements.append(Spacer(1, 1*cm))
+    elements.append(Spacer(0.5, 0.5*cm))
 
     # =================== AJOUT DU SCHÉMA ICI ===================
     if schema_image:
