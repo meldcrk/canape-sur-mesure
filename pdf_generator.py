@@ -92,22 +92,6 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     elements.append(Paragraph(dim_text, section_style))
     elements.append(Spacer(1, 0.5*cm))
 
-    # =================== SCHÉMA (Centré par défaut car c'est une image) ===================
-    if schema_image:
-        try:
-            img = Image(schema_image)
-            max_width = 14 * cm # Un peu plus petit pour bien centrer visuellement
-            aspect_ratio = img.imageHeight / float(img.imageWidth)
-            img.drawWidth = max_width
-            img.drawHeight = max_width * aspect_ratio
-            
-            elements.append(Paragraph("<b>Schéma technique</b>", section_style))
-            elements.append(Spacer(1, 0.2*cm))
-            elements.append(img)
-            elements.append(Spacer(1, 0.5*cm))
-        except Exception:
-            pass
-    
     # =================== CARACTÉRISTIQUES (Sera centré) ===================
     elements.append(Paragraph(f"<b>Profondeur :</b> {dimensions['profondeur']}cm", section_style))
     
@@ -133,6 +117,71 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
             elements.append(Paragraph(f"<b>Email :</b> {config['client']['email']}", section_style))
     
     elements.append(Spacer(1, 0.5*cm))
+
+    # =================== SCHÉMA (Centré par défaut car c'est une image) ===================
+    if schema_image:
+        try:
+            img = Image(schema_image)
+            max_width = 14 * cm # Un peu plus petit pour bien centrer visuellement
+            aspect_ratio = img.imageHeight / float(img.imageWidth)
+            img.drawWidth = max_width
+            img.drawHeight = max_width * aspect_ratio
+            
+            elements.append(Paragraph("<b>Schéma technique</b>", section_style))
+            elements.append(Spacer(1, 0.2*cm))
+            elements.append(img)
+            elements.append(Spacer(1, 0.5*cm))
+        except Exception:
+            pass
+            
+# =================== MODIFICATION 2 : COLONNES CÔTE À CÔTE ===================
+    # Pour mettre deux éléments côte à côte, on crée un tableau invisible de 1 ligne et 2 colonnes.
+    # Chaque cellule contient une liste d'éléments (Paragraphs).
+
+    # --- Colonne Gauche : Inclus ---
+    col_gauche_content = []
+    col_gauche_content.append(Paragraph("<b>Le tarif comprend :</b>", column_header_style))
+    col_gauche_content.append(Spacer(1, 0.2*cm))
+    
+    inclus_items = [
+        "Livraison bas d'immeuble",
+        "Fabrication 100% artisanale",
+        "Choix du tissu inclus",
+        "Paiement 2 à 6 fois sans frais",
+        "Délai 5 à 7 semaines",
+        "Tout est déhoussable"
+    ]
+    for item in inclus_items:
+        col_gauche_content.append(Paragraph(f"• {item}", detail_style))
+
+    # --- Colonne Droite : Cotations ---
+    col_droite_content = []
+    col_droite_content.append(Paragraph("<b>Détail des cotations :</b>", column_header_style))
+    col_droite_content.append(Spacer(1, 0.2*cm))
+    
+    cotations_items = [
+        "Accoudoir : 15cm large / 60cm haut",
+        "Dossier : 10cm large / 70cm haut",
+        "Coussins : 65/80/90cm large",
+        "Profondeur assise : 70cm",
+        "Hauteur assise : 46cm",
+        "Hauteur mousse : 25 cm"
+    ]
+    for item in cotations_items:
+        col_droite_content.append(Paragraph(f"• {item}", detail_style))
+
+    # Création du tableau conteneur pour les deux colonnes
+    # On utilise la largeur restante (environ 17-18cm) divisée par 2
+    table_colonnes = Table([[col_gauche_content, col_droite_content]], colWidths=[8.5*cm, 8.5*cm])
+    
+    table_colonnes.setStyle(TableStyle([
+        ('VALIGN', (0,0), (-1,-1), 'TOP'), # Aligner le contenu en haut
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
+    ]))
+    
+    elements.append(table_colonnes)
+    elements.append(Spacer(1, 1*cm))
     
     # =================== SAUT DE PAGE AVANT LE PRIX ===================
     elements.append(PageBreak())
@@ -183,55 +232,6 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     elements.append(table_prix)
     elements.append(Spacer(1, 1.5*cm))
 
-    # =================== MODIFICATION 2 : COLONNES CÔTE À CÔTE ===================
-    # Pour mettre deux éléments côte à côte, on crée un tableau invisible de 1 ligne et 2 colonnes.
-    # Chaque cellule contient une liste d'éléments (Paragraphs).
-
-    # --- Colonne Gauche : Inclus ---
-    col_gauche_content = []
-    col_gauche_content.append(Paragraph("<b>Le tarif comprend :</b>", column_header_style))
-    col_gauche_content.append(Spacer(1, 0.2*cm))
-    
-    inclus_items = [
-        "Livraison bas d'immeuble",
-        "Fabrication 100% artisanale",
-        "Choix du tissu inclus",
-        "Paiement 2 à 6 fois sans frais",
-        "Délai 5 à 7 semaines",
-        "Tout est déhoussable"
-    ]
-    for item in inclus_items:
-        col_gauche_content.append(Paragraph(f"• {item}", detail_style))
-
-    # --- Colonne Droite : Cotations ---
-    col_droite_content = []
-    col_droite_content.append(Paragraph("<b>Détail des cotations :</b>", column_header_style))
-    col_droite_content.append(Spacer(1, 0.2*cm))
-    
-    cotations_items = [
-        "Accoudoir : 15cm large / 60cm haut",
-        "Dossier : 10cm large / 70cm haut",
-        "Coussins : 65/80/90cm large",
-        "Profondeur assise : 70cm",
-        "Hauteur assise : 46cm",
-        "Hauteur mousse : 25 cm"
-    ]
-    for item in cotations_items:
-        col_droite_content.append(Paragraph(f"• {item}", detail_style))
-
-    # Création du tableau conteneur pour les deux colonnes
-    # On utilise la largeur restante (environ 17-18cm) divisée par 2
-    table_colonnes = Table([[col_gauche_content, col_droite_content]], colWidths=[8.5*cm, 8.5*cm])
-    
-    table_colonnes.setStyle(TableStyle([
-        ('VALIGN', (0,0), (-1,-1), 'TOP'), # Aligner le contenu en haut
-        ('LEFTPADDING', (0,0), (-1,-1), 0),
-        ('RIGHTPADDING', (0,0), (-1,-1), 0),
-    ]))
-    
-    elements.append(table_colonnes)
-    elements.append(Spacer(1, 1*cm))
-    
     # =================== FOOTER ===================
     elements.append(Paragraph("<b>FRÉVENT 62270</b>", footer_style))
     
