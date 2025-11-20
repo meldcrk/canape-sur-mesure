@@ -13,16 +13,10 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from io import BytesIO
 from datetime import datetime
 
-def generer_pdf_devis(config, prix_details):
+def generer_pdf_devis(config, prix_details, schema_image=None):
     """
     Génère un PDF de devis professionnel
-    
-    Args:
-        config: Dictionnaire avec la configuration du canapé
-        prix_details: Dictionnaire avec les détails de prix
-    
-    Returns:
-        BytesIO: Buffer contenant le PDF
+    ...
     """
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4,
