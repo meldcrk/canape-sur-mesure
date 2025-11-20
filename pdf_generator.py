@@ -178,10 +178,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     
     elements.append(table_colonnes)
     elements.append(Spacer(1, 1*cm))
-    
-    # =================== SAUT DE PAGE AVANT LE PRIX ===================
-    elements.append(PageBreak())
-    
+
     # =================== TABLEAU DES PRIX ===================
     # Titre du tableau (Centré)
     elements.append(Paragraph("<b>DÉTAILS DU DEVIS</b>", section_style))
