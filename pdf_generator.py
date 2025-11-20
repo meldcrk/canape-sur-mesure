@@ -75,18 +75,23 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     elements.append(titre)
     elements.append(Spacer(0.5, 0.5*cm))
     
-    # =================== DIMENSIONS DU CANAPÉ ===================
+# =================== DIMENSIONS DU CANAPÉ ===================
     type_canape = config['type_canape']
     dimensions = config['dimensions']
     type_text = f"<b>Configuration :</b> {type_canape}"
     
-    # Déterminer le format des dimensions selon le type
-    if "Simple" in type_canape or "S" in type_canape:
-        dim_text = f"<b>Dimensions du canapé :</b> {dimensions['tx']}cm"
+    # CORRECTION ICI : On change l'ordre et la logique des conditions
+    if "U" in type_canape:
+        # Pour le U : Ty (gauche) x Tx (centre) x Tz (droite)
+        dim_text = f"<b>Dimensions du canapé :</b> {dimensions['ty']} (G) x {dimensions['tx']} (C) x {dimensions['tz']} (D) cm"
+        
     elif "L" in type_canape:
-        dim_text = f"<b>Dimensions du canapé :</b> {dimensions['ty']}x{dimensions['tx']}cm"
-    elif "U" in type_canape:
-        dim_text = f"<b>Dimensions du canapé :</b> {dimensions['ty']}x{dimensions['tx']}x{dimensions['tz']}cm"
+        # Pour le L : Ty (gauche) x Tx (centre)
+        dim_text = f"<b>Dimensions du canapé :</b> {dimensions['ty']} (G) x {dimensions['tx']} (C) cm"
+        
+    else:
+        # Pour le Simple (ou par défaut)
+        dim_text = f"<b>Dimensions du canapé :</b> {dimensions['tx']} cm"
     
     elements.append(Paragraph(type_text, section_style))
     elements.append(Paragraph(dim_text, section_style))
