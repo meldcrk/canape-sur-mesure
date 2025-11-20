@@ -39,8 +39,8 @@ def generer_pdf_devis(config, prix_details):
     title_style = ParagraphStyle(
         'CustomTitle',
         parent=styles['Heading1'],
-        fontSize=24,
-        textColor=colors.HexColor('#2C3E50'),
+        fontSize=16,
+        textColor=colors.HexColor('#00000'),
         spaceAfter=30,
         alignment=TA_CENTER
     )
@@ -49,37 +49,17 @@ def generer_pdf_devis(config, prix_details):
     subtitle_style = ParagraphStyle(
         'CustomSubtitle',
         parent=styles['Heading2'],
-        fontSize=14,
-        textColor=colors.HexColor('#34495E'),
+        fontSize=12,
+        textColor=colors.HexColor('#00000'),
         spaceAfter=12,
         spaceBefore=12
     )
     
     # En-tête
-    titre = Paragraph("🛋️ DEVIS - CANAPÉ SUR MESURE", title_style)
+    titre = Paragraph("MON CANAPÉ MAROCAIN", title_style)
     elements.append(titre)
     elements.append(Spacer(1, 0.5*cm))
-    
-    # Date et numéro de devis
-    date_devis = datetime.now().strftime("%d/%m/%Y")
-    numero_devis = f"DEV-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
-    
-    info_devis = [
-        ['Numéro de devis:', numero_devis],
-        ['Date:', date_devis],
-        ['Valable jusqu\'au:', datetime.now().strftime("%d/%m/%Y")]
-    ]
-    
-    table_info = Table(info_devis, colWidths=[5*cm, 8*cm])
-    table_info.setStyle(TableStyle([
-        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-        ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, -1), 10),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
-    ]))
-    elements.append(table_info)
-    elements.append(Spacer(1, 1*cm))
-    
+
     # Informations client
     if config['client']['nom']:
         elements.append(Paragraph("INFORMATIONS CLIENT", subtitle_style))
