@@ -140,12 +140,12 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     col_gauche_content.append(Spacer(1, 0.2*cm))
     
     inclus_items = [
-        "Livraison bas d'immeuble",
+        "Livraison en bas d'immeuble",
         "Fabrication 100% artisanale",
-        "Choix du tissu inclus",
-        "Paiement 2 à 6 fois sans frais",
-        "Délai 5 à 7 semaines",
-        "Tout est déhoussable"
+        "Le choix du tissu n'impacte pas le devis",
+        "Possibilité de régler de 2 à 6 fois sans frais",
+        "Délai de livraison entre 5 à 7 semaines",
+        "Housses de matelas et coussins déhoussables"
     ]
     for item in inclus_items:
         col_gauche_content.append(Paragraph(f"• {item}", detail_style))
