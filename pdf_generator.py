@@ -83,15 +83,15 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     # CORRECTION ICI : On change l'ordre et la logique des conditions
     if "U" in type_canape:
         # Pour le U : Ty (gauche) x Tx (centre) x Tz (droite)
-        dim_text = f"<b>Dimensions du canapé :</b> {dimensions['ty']} (G) x {dimensions['tx']} (C) x {dimensions['tz']} (D) cm"
+        dim_text = f"<b>Dimensions du canapé :</b> {dimensions['ty']}x{dimensions['tx']}x{dimensions['tz']}cm"
         
     elif "L" in type_canape:
         # Pour le L : Ty (gauche) x Tx (centre)
-        dim_text = f"<b>Dimensions du canapé :</b> {dimensions['ty']} (G) x {dimensions['tx']} (C) cm"
+        dim_text = f"<b>Dimensions du canapé :</b> {dimensions['ty']}x{dimensions['tx']}cm"
         
     else:
         # Pour le Simple (ou par défaut)
-        dim_text = f"<b>Dimensions du canapé :</b> {dimensions['tx']} cm"
+        dim_text = f"<b>Dimensions du canapé :</b> {dimensions['tx']}cm"
     
     elements.append(Paragraph(type_text, section_style))
     elements.append(Paragraph(dim_text, section_style))
