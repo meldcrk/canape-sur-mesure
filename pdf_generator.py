@@ -124,7 +124,6 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
             img.drawWidth = max_width
             img.drawHeight = max_width * aspect_ratio
             
-            elements.append(Paragraph("<b>Schéma technique</b>", section_style))
             elements.append(Spacer(1, 0.2*cm))
             elements.append(img)
             elements.append(Spacer(1, 0.5*cm))
