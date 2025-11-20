@@ -84,7 +84,6 @@ def generer_pdf_devis(config, prix_details):
     
     # =================== DIMENSIONS DU CANAPÉ ===================
     type_canape = config['type_canape']
-    type_canape = f"<b>Configuration :</b> {'type_canape'}"
     dimensions = config['dimensions']
 
     # Déterminer le format des dimensions selon le type
