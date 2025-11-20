@@ -32,7 +32,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     title_style = ParagraphStyle(
         'CustomTitle',
         parent=styles['Heading1'],
-        fontSize=16,
+        fontSize=12,
         textColor=colors.HexColor('#00000'),
         spaceAfter=20,
         alignment=TA_CENTER,
