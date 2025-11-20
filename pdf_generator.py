@@ -73,7 +73,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     # =================== TITRE ===================
     titre = Paragraph("MON CANAPÉ MAROCAIN", title_style)
     elements.append(titre)
-    elements.append(Spacer(1, 0.5*cm))
+    elements.append(Spacer(0.5, 0.5*cm))
     
     # =================== DIMENSIONS DU CANAPÉ (Sera centré via section_style) ===================
     type_canape = config['type_canape']
