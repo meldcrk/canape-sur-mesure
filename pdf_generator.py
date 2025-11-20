@@ -151,8 +151,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         except Exception as e:
             print(f"Erreur lors de l'intégration de l'image : {e}")
             elements.append(Paragraph("<i>(Schéma non disponible)</i>", detail_style))
-        
-elements.append(PageBreak())
+            elements.append(PageBreak())
                 
     # =================== TABLEAU DES PRIX ===================
     # Titre du tableau
