@@ -90,7 +90,6 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     
     elements.append(Paragraph(type_text, section_style))
     elements.append(Paragraph(dim_text, section_style))
-    elements.append(Spacer(1, 0.5*cm))
 
     # =================== CARACTÉRISTIQUES (Sera centré) ===================
     elements.append(Paragraph(f"<b>Profondeur :</b> {dimensions['profondeur']}cm", section_style))
@@ -107,8 +106,6 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
                          config['options'].get('acc_right', False),
                          config['options'].get('acc_bas', False)])
     elements.append(Paragraph(f"<b>Accoudoirs :</b> {nb_accoudoirs}", section_style))
-    
-    elements.append(Spacer(1, 0.5*cm))
     
     # =================== INFORMATIONS CLIENT (Sera centré) ===================
     if config['client']['nom']:
