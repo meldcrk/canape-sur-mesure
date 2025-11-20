@@ -75,7 +75,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     elements.append(titre)
     elements.append(Spacer(0.5, 0.5*cm))
     
-# =================== DIMENSIONS DU CANAPÉ ===================
+    # =================== DIMENSIONS DU CANAPÉ ===================
     type_canape = config['type_canape']
     dimensions = config['dimensions']
     type_text = f"<b>Configuration :</b> {type_canape}"
@@ -155,8 +155,46 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         except Exception as e:
             print(f"Erreur lors de l'intégration de l'image : {e}")
             elements.append(Paragraph("<i>(Schéma non disponible)</i>", detail_style))
-                
-    # =================== TABLEAU DES PRIX ===================
+
+     # =================== INCLUS DANS LE TARIF ===================
+    inclus_title = Paragraph("<b>Le tarif comprend :</b>", section_style)
+    elements.append(inclus_title)
+    elements.append(Spacer(1, 0.3*cm))
+    
+    inclus_items = [
+        "la livraison en bas d'immeuble",
+        "la fabrication 100% artisanal et en France",
+        "le choix du tissu n'impacte pas le devis",
+        "possibilité de régler de 2 à 6 fois sans frais",
+        "délai de livraison entre 5 à 7 semaines",
+        "les housses de matelas et coussins déhoussables"
+    ]
+    
+    for item in inclus_items:
+        elements.append(Paragraph(f" {item}", detail_style))
+    
+    elements.append(Spacer(1, 0.8*cm))
+    
+    # =================== DÉTAIL DES COTATIONS ===================
+    cotations_title = Paragraph("<b>Voici le détail des cotations de votre canapé :</b>", section_style)
+    elements.append(cotations_title)
+    elements.append(Spacer(1, 0.3*cm))
+    
+    cotations_items = [
+        "accoudoir : 15cm de largeur, 60cm de hauteur",
+        "dossier : 10cm de largeur, 70cm de hauteur",
+        "coussins : 65cm, 80cm, 90cm de largeur, 45cm de hauteur",
+        "profondeur d'assise : 70cm (possibilité de faire sur mesure)",
+        "hauteur d'assise : 46cm",
+        "hauteur de mousse : 25 cm"
+    ]
+    
+    for item in cotations_items:
+        elements.append(Paragraph(item, detail_style))
+    
+    elements.append(Spacer(1, 1*cm))
+
+      # =================== TABLEAU DES PRIX ===================
     # Titre du tableau
     elements.append(PageBreak())
     prix_title = Paragraph("<b>DÉTAILS DU DEVIS</b>", section_style)
@@ -214,44 +252,6 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     table_prix.setStyle(TableStyle(table_style))
     elements.append(table_prix)
     elements.append(Spacer(1, 1.5*cm))
-
-     # =================== INCLUS DANS LE TARIF ===================
-    inclus_title = Paragraph("<b>Le tarif comprend :</b>", section_style)
-    elements.append(inclus_title)
-    elements.append(Spacer(1, 0.3*cm))
-    
-    inclus_items = [
-        "la livraison en bas d'immeuble",
-        "la fabrication 100% artisanal et en France",
-        "le choix du tissu n'impacte pas le devis",
-        "possibilité de régler de 2 à 6 fois sans frais",
-        "délai de livraison entre 5 à 7 semaines",
-        "les housses de matelas et coussins déhoussables"
-    ]
-    
-    for item in inclus_items:
-        elements.append(Paragraph(f" {item}", detail_style))
-    
-    elements.append(Spacer(1, 0.8*cm))
-    
-    # =================== DÉTAIL DES COTATIONS ===================
-    cotations_title = Paragraph("<b>Voici le détail des cotations de votre canapé :</b>", section_style)
-    elements.append(cotations_title)
-    elements.append(Spacer(1, 0.3*cm))
-    
-    cotations_items = [
-        "accoudoir : 15cm de largeur, 60cm de hauteur",
-        "dossier : 10cm de largeur, 70cm de hauteur",
-        "coussins : 65cm, 80cm, 90cm de largeur, 45cm de hauteur",
-        "profondeur d'assise : 70cm (possibilité de faire sur mesure)",
-        "hauteur d'assise : 46cm",
-        "hauteur de mousse : 25 cm"
-    ]
-    
-    for item in cotations_items:
-        elements.append(Paragraph(item, detail_style))
-    
-    elements.append(Spacer(1, 1*cm))
     
     # =================== FOOTER ===================
     footer_text = Paragraph("<b>FRÉVENT 62270</b>", footer_style)
