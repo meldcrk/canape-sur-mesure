@@ -138,7 +138,7 @@ def generer_pdf_devis(config, prix_details):
     line_data = [['', '']]
     line_table = Table(line_data, colWidths=[17*cm, 0])
     line_table.setStyle(TableStyle([
-        ('LINEABOVE', (0, 0), (-1, 0), 2, colors.HexColor('#3498DB')),
+        ('LINEABOVE', (0, 0), (-1, 0), 2, colors.HexColor('#00000')),
     ]))
     elements.append(line_table)
     elements.append(Spacer(1, 0.5*cm))
@@ -158,7 +158,7 @@ def generer_pdf_devis(config, prix_details):
     ]
     
     for item in inclus_items:
-        elements.append(Paragraph(f"• {item}", detail_style))
+        elements.append(Paragraph(f" {item}", detail_style))
     
     elements.append(Spacer(1, 0.8*cm))
     
