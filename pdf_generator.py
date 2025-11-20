@@ -91,6 +91,29 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     
     elements.append(Paragraph(type_text, section_style))
     elements.append(Paragraph(dim_text, section_style))
+    elements.append(Spacer(1, 0.5*cm))
+
+    # =================== AJOUT DU SCHÉMA ICI ===================
+    if schema_image:
+        try:
+            # On crée l'image ReportLab à partir du buffer
+            img = Image(schema_image)
+            
+            # Gestion du redimensionnement proportionnel pour tenir dans la page
+            # On veut une largeur max de 16cm (marges de 2cm à gauche et droite sur A4 de 21cm)
+            max_width = 16 * cm
+            aspect_ratio = img.imageHeight / float(img.imageWidth)
+            
+            img.drawWidth = max_width
+            img.drawHeight = max_width * aspect_ratio
+            
+            elements.append(Paragraph("<b>Schéma technique :</b>", section_style))
+            elements.append(Spacer(1, 0.2*cm))
+            elements.append(img)
+            elements.append(Spacer(1, 0.5*cm))
+        except Exception as e:
+            print(f"Erreur lors de l'intégration de l'image : {e}")
+            elements.append(Paragraph("<i>(Schéma non disponible)</i>", detail_style))
     
     # =================== CARACTÉRISTIQUES ===================
     profondeur_text = f"<b>Profondeur :</b> {dimensions['profondeur']}cm"
