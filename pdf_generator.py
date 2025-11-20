@@ -147,7 +147,7 @@ def generer_pdf_devis(config, prix_details):
     
     # =================== TABLEAU DES PRIX ===================
     # Titre du tableau
-    prix_title = Paragraph("<b>DÉTAIL DU DEVIS</b>", section_style)
+    prix_title = Paragraph("<b>DÉTAILS DU DEVIS</b>", section_style)
     elements.append(prix_title)
     elements.append(Spacer(1, 0.3*cm))
     
@@ -178,8 +178,8 @@ def generer_pdf_devis(config, prix_details):
         ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
         ('TOPPADDING', (0, 0), (-1, -1), 8),
         ('GRID', (0, 0), (-1, -4), 0.5, colors.grey),
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#3498DB')),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.white),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
     ]
     
     # Style pour le sous-total
@@ -194,7 +194,7 @@ def generer_pdf_devis(config, prix_details):
     table_style.extend([
         ('FONTNAME', (0, total_row), (-1, total_row), 'Helvetica-Bold'),
         ('FONTSIZE', (0, total_row), (-1, total_row), 14),
-        ('BACKGROUND', (0, total_row), (-1, total_row), colors.HexColor('#2ECC71')),
+        ('BACKGROUND', (0, total_row), (-1, total_row), colors.white),
         ('TEXTCOLOR', (0, total_row), (-1, total_row), colors.whitesmoke),
         ('LINEABOVE', (0, total_row), (-1, total_row), 2, colors.black),
     ])
