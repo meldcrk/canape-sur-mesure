@@ -149,12 +149,12 @@ def generer_pdf_devis(config, prix_details):
     elements.append(Spacer(1, 0.3*cm))
     
     inclus_items = [
-        "📦 la livraison en bas d'immeuble",
-        "🛋️ la fabrication 100% artisanal et en France",
-        "✨ le choix du tissu n'impacte pas le devis",
-        "👍🏻 possibilité de régler de 2 à 6 fois sans frais",
-        "😁 délai de livraison entre 5 à 7 semaines",
-        "🌱 les housses de matelas et coussins déhoussables"
+        "la livraison en bas d'immeuble",
+        "la fabrication 100% artisanal et en France",
+        "le choix du tissu n'impacte pas le devis",
+        "possibilité de régler de 2 à 6 fois sans frais",
+        "délai de livraison entre 5 à 7 semaines",
+        "les housses de matelas et coussins déhoussables"
     ]
     
     for item in inclus_items:
@@ -168,12 +168,12 @@ def generer_pdf_devis(config, prix_details):
     elements.append(Spacer(1, 0.3*cm))
     
     cotations_items = [
-        "• accoudoir : 15cm de largeur, 60cm de hauteur",
-        "• dossier : 10cm de largeur, 70cm de hauteur",
-        "• coussins : 65cm, 80cm, 90cm de largeur, 45cm de hauteur",
-        "• profondeur d'assise : 70cm (possibilité de faire sur mesure)",
-        "• hauteur d'assise : 46cm",
-        "• hauteur de mousse : 25 cm"
+        "accoudoir : 15cm de largeur, 60cm de hauteur",
+        "dossier : 10cm de largeur, 70cm de hauteur",
+        "coussins : 65cm, 80cm, 90cm de largeur, 45cm de hauteur",
+        "profondeur d'assise : 70cm (possibilité de faire sur mesure)",
+        "hauteur d'assise : 46cm",
+        "hauteur de mousse : 25 cm"
     ]
     
     for item in cotations_items:
