@@ -86,6 +86,7 @@ def generer_pdf_devis(config, prix_details):
     type_canape = config['type_canape']
     dimensions = config['dimensions']
     type_text = f"<b>Configuration :</b> {type_canape}"
+    
     # Déterminer le format des dimensions selon le type
     if "Simple" in type_canape or "S" in type_canape:
         dim_text = f"<b>Dimensions du canapé :</b> {dimensions['tx']}cm"
@@ -94,7 +95,7 @@ def generer_pdf_devis(config, prix_details):
     elif "U" in type_canape:
         dim_text = f"<b>Dimensions du canapé :</b> {dimensions['ty']}x{dimensions['tx']}x{dimensions['tz']}cm"
     
-    elements.append(Paragraph(dim_text, section_style))
+    elements.append(Paragraph(type_text, dim_text, section_style))
     
     # =================== CARACTÉRISTIQUES ===================
     profondeur_text = f"<b>Profondeur :</b> {dimensions['profondeur']}cm"
