@@ -145,8 +145,8 @@ def generer_pdf_devis(config, prix_details):
     elements.append(line_table)
     elements.append(Spacer(1, 0.5*cm))
     
-    # =================== INCLUS DANS LE TARIF REMISÉ ===================
-    inclus_title = Paragraph("<b>Le tarif remisé comprend :</b>", section_style)
+    # =================== INCLUS DANS LE TARIF ===================
+    inclus_title = Paragraph("<b>Le tarif comprend :</b>", section_style)
     elements.append(inclus_title)
     elements.append(Spacer(1, 0.3*cm))
     
