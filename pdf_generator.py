@@ -3,15 +3,6 @@ Module de génération de devis PDF
 Utilise reportlab pour créer des PDF professionnels
 """
 
-from reportlab.lib.pagesizes import A4
-from reportlab.lib import colors
-from reportlab.lib.units import cm
-from reportlab.platypus import Image
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_LEFT
-from io import BytesIO
-from datetime import datetime
 
 def generer_pdf_devis(config, prix_details, schema_image=None):
     """
