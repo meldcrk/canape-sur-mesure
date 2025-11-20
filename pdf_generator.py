@@ -95,7 +95,8 @@ def generer_pdf_devis(config, prix_details):
     elif "U" in type_canape:
         dim_text = f"<b>Dimensions du canapé :</b> {dimensions['ty']}x{dimensions['tx']}x{dimensions['tz']}cm"
     
-    elements.append(Paragraph(type_text, dim_text, section_style))
+    elements.append(Paragraph(type_text, section_style))
+    elements.append(Paragraph(dim_text, section_style))
     
     # =================== CARACTÉRISTIQUES ===================
     profondeur_text = f"<b>Profondeur :</b> {dimensions['profondeur']}cm"
