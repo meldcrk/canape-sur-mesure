@@ -39,8 +39,8 @@ def generer_pdf_devis(config, prix_details):
     title_style = ParagraphStyle(
         'CustomTitle',
         parent=styles['Heading1'],
-        fontSize=28,
-        textColor=colors.HexColor('#2C3E50'),
+        fontSize=16,
+        textColor=colors.HexColor('#00000'),
         spaceAfter=20,
         alignment=TA_CENTER,
         fontName='Helvetica-Bold'
@@ -50,8 +50,8 @@ def generer_pdf_devis(config, prix_details):
     section_style = ParagraphStyle(
         'SectionStyle',
         parent=styles['Normal'],
-        fontSize=11,
-        textColor=colors.HexColor('#34495E'),
+        fontSize=12,
+        textColor=colors.HexColor('#00000'),
         spaceAfter=8,
         spaceBefore=4,
         leftIndent=0
@@ -61,8 +61,8 @@ def generer_pdf_devis(config, prix_details):
     detail_style = ParagraphStyle(
         'DetailStyle',
         parent=styles['Normal'],
-        fontSize=9,
-        textColor=colors.HexColor('#555555'),
+        fontSize=10,
+        textColor=colors.HexColor('#00000'),
         spaceAfter=4,
         leftIndent=10
     )
@@ -72,7 +72,7 @@ def generer_pdf_devis(config, prix_details):
         'FooterStyle',
         parent=styles['Normal'],
         fontSize=10,
-        textColor=colors.HexColor('#2C3E50'),
+        textColor=colors.HexColor('#00000'),
         alignment=TA_CENTER,
         spaceAfter=6
     )
@@ -91,7 +91,7 @@ def generer_pdf_devis(config, prix_details):
         dim_text = f"<b>Dimensions du canapé :</b> {dimensions['tx']}cm"
     elif "L" in type_canape:
         dim_text = f"<b>Dimensions du canapé :</b> {dimensions['ty']}x{dimensions['tx']}cm"
-    else:  # U
+    elif "U" in type_canape:
         dim_text = f"<b>Dimensions du canapé :</b> {dimensions['ty']}x{dimensions['tx']}x{dimensions['tz']}cm"
     
     elements.append(Paragraph(dim_text, section_style))
