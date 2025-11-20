@@ -12,6 +12,8 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from io import BytesIO
 from datetime import datetime
 
+import canapematplot   # ➤ AJOUT : import du générateur de schéma
+
 
 def generer_pdf_devis(config, prix_details):
     """
@@ -144,6 +146,20 @@ def generer_pdf_devis(config, prix_details):
     ]))
     elements.append(line_table)
     elements.append(Spacer(1, 0.5*cm))
+
+        # -------------------------------------------------------------------------
+    # ➤ AJOUT : GÉNÉRATION DU SCHÉMA & INSERTION DU SCHÉMA DANS LE PDF
+    # -------------------------------------------------------------------------
+    image_path = "schema_canape.png"
+    canapematplot.generate_schema(image_path)     # ➤ Appel direct au script
+    
+    img = Image(image_path)
+    img.drawWidth = 16 * cm
+    img.drawHeight = 12 * cm
+    elements.append(img)
+    elements.append(Spacer(1, 1*cm))
+    # -------------------------------------------------------------------------
+
     
     # =================== TABLEAU DES PRIX ===================
     # Titre du tableau
