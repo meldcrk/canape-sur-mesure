@@ -6,8 +6,7 @@ Utilise reportlab pour créer des PDF professionnels
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.units import cm
-from reportlab.platypus import Image
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
 from io import BytesIO
@@ -154,13 +153,14 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
             img.drawWidth = max_width
             img.drawHeight = max_width * aspect_ratio
             
-            elements.append(Paragraph("<b>Schéma technique :</b>", section_style))
+            elements.append(Paragraph("<b>Schéma du canapé :</b>", section_style))
             elements.append(Spacer(1, 0.2*cm))
             elements.append(img)
             elements.append(Spacer(1, 0.5*cm))
         except Exception as e:
             print(f"Erreur lors de l'intégration de l'image : {e}")
             elements.append(Paragraph("<i>(Schéma non disponible)</i>", detail_style))
+            elements.append(PageBreak())
     
     # =================== TABLEAU DES PRIX ===================
     # Titre du tableau
