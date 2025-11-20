@@ -50,12 +50,6 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         leftIndent=0
         alignment=TA_CENTER
     )
-
-    column_header_style = ParagraphStyle(
-        'ColumnHeaderStyle',
-        parent=section_style,
-        alignment=TA_LEFT
-    )
     
     # Style pour les détails techniques
     detail_style = ParagraphStyle(
