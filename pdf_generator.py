@@ -5,15 +5,30 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, 
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 from io import BytesIO
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+import os
 
-# --- NOUVEAU : MAPPING DES IMAGES ---
+# --- POLICE UNICODE ---
+FONT_NAME_UNICODE = 'DejaVuSans'
+FONT_FILE = 'DejaVuSans.ttf'
+
+if os.path.exists(FONT_FILE):
+    pdfmetrics.registerFont(TTFont(FONT_NAME_UNICODE, FONT_FILE))
+    BASE_FONT = FONT_NAME_UNICODE
+else:
+    BASE_FONT = 'Helvetica'
+    print(f"ATTENTION : Le fichier de police {FONT_FILE} est introuvable.")
+# ----------------------
+
+# --- MAPPING DES IMAGES ---
 IMAGE_FILES = {
-    'D25': 'D25.png',
-    'D30': 'D30.png',
-    'HR35': 'HR35.png',
-    'HR45': 'HR45.png'
+    'D25': 'images/mousse_D25.png',
+    'D30': 'images/mousse_D30.png',
+    'HR35': 'images/mousse_HR35.png',
+    'HR45': 'images/mousse_HR45.png'
 }
-# Assurez-vous d'avoir un dossier 'images' et des fichiers nommés comme ci-dessus (ex: mousse_HR35.png)
+
 
 def generer_pdf_devis(config, prix_details, schema_image=None):
     """
@@ -21,7 +36,6 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     """
     buffer = BytesIO()
     
-    # On augmente la marge du bas (bottomMargin) à 6cm pour le pied de page fixe.
     doc = SimpleDocTemplate(buffer, pagesize=A4,
                            rightMargin=1*cm, leftMargin=1*cm,
                            topMargin=1*cm, bottomMargin=6*cm)
@@ -30,27 +44,52 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     styles = getSampleStyleSheet()
     
     # --- DÉFINITION DES STYLES ---
-    title_style = ParagraphStyle('CustomTitle', parent=styles['Heading1'], fontSize=14, textColor=colors.black, spaceAfter=10, alignment=TA_CENTER, fontName='Helvetica-Bold')
-    header_info_style = ParagraphStyle('HeaderInfo', parent=styles['Normal'], fontSize=12, leading=14, textColor=colors.black, alignment=TA_CENTER, spaceAfter=10)
-    price_style = ParagraphStyle('PriceStyle', parent=styles['Heading2'], fontSize=16, alignment=TA_CENTER, fontName='Helvetica', textColor=colors.black, spaceBefore=10, spaceAfter=10)
-
-    # Style spécifique pour la description de mousse (aligné à gauche pour une meilleure lisibilité)
-    description_mousse_style = ParagraphStyle('MousseDesc', parent=styles['Normal'], fontSize=9, leading=11, textColor=colors.black, alignment=TA_LEFT)
+    title_style = ParagraphStyle(
+        'CustomTitle', parent=styles['Heading1'], fontSize=14, textColor=colors.black, 
+        spaceAfter=5, alignment=TA_CENTER, fontName=BASE_FONT + '-Bold'
+    )
+    
+    header_info_style = ParagraphStyle(
+        'HeaderInfo', parent=styles['Normal'], fontSize=10, leading=14, 
+        textColor=colors.black, alignment=TA_CENTER, fontName=BASE_FONT
+    )
+    
+    price_style = ParagraphStyle(
+        'PriceStyle', parent=styles['Heading2'], fontSize=16, alignment=TA_RIGHT, 
+        fontName=BASE_FONT + '-Bold', textColor=colors.black, spaceBefore=10, spaceAfter=10
+    )
+    
+    # Style de description de mousse
+    description_mousse_style = ParagraphStyle(
+        'MousseDesc', parent=styles['Normal'], fontSize=9, leading=11, 
+        textColor=colors.black, alignment=TA_LEFT, fontName=BASE_FONT
+    )
     
     # Styles pour le pied de page
-    column_header_style = ParagraphStyle('ColumnHeaderStyle', parent=styles['Normal'], fontSize=12, fontName='Helvetica-Bold', alignment=TA_LEFT, spaceAfter=4)
-    detail_style = ParagraphStyle('DetailStyle', parent=styles['Normal'], fontSize=12, leading=14, textColor=colors.black, alignment=TA_LEFT)
-    footer_style = ParagraphStyle('FooterStyle', parent=styles['Normal'], fontSize=12, textColor=colors.black, alignment=TA_CENTER)
+    column_header_style = ParagraphStyle(
+        'ColumnHeaderStyle', parent=styles['Normal'], fontSize=9, alignment=TA_LEFT, 
+        fontName=BASE_FONT + '-Bold', spaceAfter=2
+    )
+
+    detail_style = ParagraphStyle(
+        'DetailStyle', parent=styles['Normal'], fontSize=8, leading=10, 
+        textColor=colors.black, alignment=TA_LEFT, fontName=BASE_FONT
+    )
+    
+    footer_style = ParagraphStyle(
+        'FooterStyle', parent=styles['Normal'], fontSize=9, textColor=colors.black, 
+        alignment=TA_CENTER, spaceBefore=5, fontName=BASE_FONT
+    )
 
     # --- FONCTION INTERNE POUR DESSINER LE PIED DE PAGE FIXE ---
     def draw_footer(canvas, doc):
         canvas.saveState()
         
-        # 1. Préparation des données des colonnes (ex-Partie 5)
+        # 1. Préparation des données des colonnes
         
         # Colonne Gauche
         col_gauche = []
-        col_gauche.append(Paragraph("Il faut savoir que le tarif comprend :", column_header_style))
+        col_gauche.append(Paragraph("Ce que le tarif comprend :", column_header_style))
         inclus_items = [
             "Livraison bas d'immeuble",
             "Fabrication 100% artisanale France",
@@ -79,7 +118,6 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         for item in cotations_items:
             col_droite.append(Paragraph(f"• {item}", detail_style))
 
-        # Création du tableau pour les colonnes
         table_footer = Table([[col_gauche, col_droite]], colWidths=[9.5*cm, 9.5*cm])
         table_footer.setStyle(TableStyle([
             ('VALIGN', (0,0), (-1,-1), 'TOP'),
@@ -87,11 +125,10 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
             ('RIGHTPADDING', (0,0), (-1,-1), 0),
         ]))
         
-        # Calcul de la taille et dessin
         w, h = table_footer.wrap(doc.width, doc.bottomMargin)
         table_footer.drawOn(canvas, doc.leftMargin, 1.5*cm)
         
-        # 2. Ville (ex-Partie 6) - Tout en bas
+        # 2. Ville (ex-Partie 6)
         p_ville = Paragraph("FRÉVENT 62270", footer_style)
         w_ville, h_ville = p_ville.wrap(doc.width, doc.bottomMargin)
         p_ville.drawOn(canvas, doc.leftMargin, 0.5*cm)
@@ -100,10 +137,9 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
 
     # =================== CONTENU DU DOCUMENT ===================
     
-    # 1. TITRE
+    # 1. TITRE et INFOS HAUTES
     elements.append(Paragraph("MON CANAPÉ MAROCAIN", title_style))
     
-    # 2. INFORMATIONS (HAUT)
     type_canape = config['type_canape']
     dims = config['dimensions']
     
@@ -142,30 +178,31 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     
     elements.append(Spacer(1, 0.2*cm))
     
-    # --- MODIFICATION CLÉ : IMAGE ET TEXTE EN TABLEAU ---
+    # --- MODIFICATION CLÉ : Image et Texte en Tableau ---
     image_path = IMAGE_FILES.get(mousse_type)
     
     if image_path:
         try:
-            # Réduire la taille de l'image pour qu'elle tienne à côté du texte
             img_mousse = Image(image_path, width=2.5*cm, height=2.5*cm)
             text_flowable = Paragraph(f"<i>{texte_mousse}</i>", description_mousse_style)
             
-            # Créer un tableau pour l'alignement
-            mousse_table = Table([[img_mousse, text_flowable]], colWidths=[3*cm, 15*cm])
+            # Ajustement des colWidths pour laisser plus de marge
+            # 18cm de largeur totale disponible (A4 - 2x1cm marge)
+            mousse_table = Table([[img_mousse, text_flowable]], colWidths=[3*cm, 14*cm]) 
+            
             mousse_table.setStyle(TableStyle([
-                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-                ('LEFTPADDING', (0, 0), (0, 0), 0),
-                ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+                # Centrage vertical par rapport à l'image
+                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'), 
+                # Ajout de padding à gauche et à droite de la table complète pour effet de marge
+                ('LEFTPADDING', (0, 0), (0, 0), 0.5*cm), # Marge à gauche de l'image
+                ('RIGHTPADDING', (0, 0), (-1, -1), 0.5*cm), # Marge à droite du texte
             ]))
             elements.append(mousse_table)
         except Exception:
-            # En cas d'erreur de fichier ou de chemin, revenir au texte seul
+            # En cas d'erreur de fichier, afficher le texte seul 
             elements.append(Paragraph(f"<i>{texte_mousse}</i>", description_mousse_style))
     else:
-        # Pas de chemin d'image défini, afficher seulement le texte
         elements.append(Paragraph(f"<i>{texte_mousse}</i>", description_mousse_style))
-    # --- FIN MODIFICATION CLÉ ---
 
     elements.append(Spacer(1, 0.3*cm))
 
