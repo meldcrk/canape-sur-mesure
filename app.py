@@ -135,6 +135,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # SECTION 2: COMPOSANTS
+
     with st.container(border=True):
         st.markdown("### 2. Accoudoirs & Dossiers")
         
@@ -163,6 +164,7 @@ st.markdown("""
             dossier_right = False
             if "U" in type_canape:
                 dossier_right = st.checkbox("Droit", value=True, key="dos_droit")
+                
 # -----------------------------------------------------------------------------
 # 3. INTERFACE UTILISATEUR
 # -----------------------------------------------------------------------------
