@@ -87,8 +87,8 @@ st.markdown("""
         color: black;
     }
     .stTabs [aria-selected="true"] {
-        background-color: #0f172a !important;
-        color: white !important;
+        background-color: #0f172a;
+        color: white;
     }
 
     /* Boutons Primaires */
@@ -118,7 +118,7 @@ st.markdown("""
     }
     div.stButton > button[kind="secondary"]:hover {
         background-color: #f1f5f9;
-        border-color: #cbd5e1;
+        border-color: black;
     }
 
     /* Cards */
@@ -243,13 +243,13 @@ with col_config:
                 elif "U" in type_canape:
                     ty = st.number_input("Retour Gauche (Ty)", 100, 600, 300, 10)
                 else:
-                    st.markdown("<div style='height: 42px; display: flex; align-items: center; color: #cbd5e1;'>-</div>", unsafe_allow_html=True)
+                    st.markdown("<div style='height: 42px; display: flex; align-items: center; color: black;'>-</div>", unsafe_allow_html=True)
 
             with c3:
                 if "U" in type_canape:
                     tz = st.number_input("Retour Droit (Tz)", 100, 600, 280, 10)
                 else:
-                    st.markdown("<div style='height: 42px; display: flex; align-items: center; color: #cbd5e1;'>-</div>", unsafe_allow_html=True)
+                    st.markdown("<div style='height: 42px; display: flex; align-items: center; color: black;'>-</div>", unsafe_allow_html=True)
                     
             profondeur = st.slider("Profondeur d'assise (cm)", 50, 120, 70, 5)
 
@@ -393,7 +393,7 @@ with col_preview:
                     with t1:
                         st.markdown("### Total TTC")
                     with t2:
-                        st.markdown(f"<h2 style='text-align:right; color:#0f172a; margin:0;'>{montant_ttc:.2f} €</h2>", unsafe_allow_html=True)
+                        st.markdown(f"<h2 style='text-align:right; color:black; margin:0;'>{montant_ttc:.2f} €</h2>", unsafe_allow_html=True)
                     
                     # Indicateurs Marge (Seulement si disponibles dans pricing.py)
                     if 'marge_ht' in prix_details:
@@ -412,7 +412,7 @@ with col_preview:
             # Placeholder si pas encore généré
             st.info("Cliquez sur 'Mettre à jour' pour voir votre configuration.")
             st.markdown("""
-                <div style="background-color: #f1f5f9; border-radius: 8px; height: 300px; display: flex; align-items: center; justify-content: center; color: #94a3b8;">
+                <div style="background-color: white; border-radius: 8px; height: 300px; display: flex; align-items: center; justify-content: center; color: black;">
                     Aperçu du schéma ici
                 </div>
             """, unsafe_allow_html=True)
