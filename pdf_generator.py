@@ -61,7 +61,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     
     # Style de description de mousse
     description_mousse_style = ParagraphStyle(
-        'MousseDesc', parent=styles['Normal'], fontSize=12, leading=10, 
+        'MousseDesc', parent=styles['Normal'], fontSize=12, leading=12, 
         textColor=colors.black, alignment=TA_LEFT, fontName=BASE_FONT
     )
     
