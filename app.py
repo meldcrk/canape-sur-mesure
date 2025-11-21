@@ -51,22 +51,22 @@ st.markdown("""
     h1, h2, h3 {
         font-weight: 700;
         letter-spacing: -0.025em;
-        color: #00000;
+        color: black;
     }
     h1 { margin-bottom: 1.5rem !important; }
 
     /* Input Fields Styling */
     .stTextInput input, .stNumberInput input, .stSelectbox div[data-baseweb="select"] > div {
-        background-color: #ffffff;
+        background-color: white;
         border: 1px solid #e2e8f0;
         border-radius: 0.5rem;
-        color: #00000;
+        color: black;
         height: 42px;
     }
     
     /* Focus states */
     .stTextInput input:focus, .stNumberInput input:focus {
-        border-color: #000000;
+        border-color: black;
         box-shadow: none;
     }
 
@@ -84,7 +84,7 @@ st.markdown("""
         font-weight: 500;
         border: none;
         background-color: white;
-        color: #00000;
+        color: black;
     }
     .stTabs [aria-selected="true"] {
         background-color: #0f172a !important;
@@ -93,8 +93,8 @@ st.markdown("""
 
     /* Boutons Primaires */
     div.stButton > button[kind="primary"] {
-        background-color: #fffff;
-        color: #00000;
+        background-color: white;
+        color: black;
         border-radius: 0.5rem;
         border: none;
         padding: 0.5rem 1rem;
@@ -135,7 +135,7 @@ st.markdown("""
     div[data-testid="stMetricValue"] {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #00000;
+        color: black;
     }
     div[data-testid="stMetricLabel"] {
         font-size: 0.875rem;
