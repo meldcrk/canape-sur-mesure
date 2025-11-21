@@ -51,7 +51,7 @@ st.markdown("""
     h1, h2, h3 {
         font-weight: 700;
         letter-spacing: -0.025em;
-        color: black;
+        color: black !important;
     }
     h1 { margin-bottom: 1.5rem !important; }
 
