@@ -1,3 +1,7 @@
+"""
+Application Streamlit pour générer des devis de canapés sur mesure
+Design style 'Marocain/Lovable' avec Palette Personnalisée - Utilise canapematplot.py
+"""
 
 import streamlit as st
 import matplotlib.pyplot as plt
@@ -26,119 +30,145 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Injection de CSS pour imiter le style Lovable (Shadcn UI) + Style des Tabs
+# Injection de CSS Personnalisé selon vos codes couleurs
 st.markdown("""
 <style>
-
     /* Import de la police Inter */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-    /* Global Reset & Font */
-    html, body, [class*="css"] {
-        font-family: 'Inter', sans-serif;
-        color: black;
-    }
-    
-    /* Fond général */
+    /* --- 1. FOND GÉNÉRAL (#FBF6EF) --- */
     .stApp {
-        background-color: #EDE8E1;
+        background-color: #FBF6EF;
+        font-family: 'Inter', sans-serif;
     }
 
-    /* Titres */
-    h1, h2, h3, p {
-        font-weight: 500;
+    /* --- 2. TITRES (Noir) --- */
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 700;
+        color: #000000 !important;
         letter-spacing: -0.025em;
-        color: black;
     }
     h1 { margin-bottom: 1.5rem !important; }
+    
+    /* Textes généraux en noir pour lisibilité */
+    p, label, span, div[data-testid="stMarkdownContainer"] p {
+        color: #000000;
+    }
 
-    /* Input Fields Styling */
+    /* --- 3. CHAMPS DE SAISIE --- */
+    /* Fond : #EDE7DE | Texte : #8C6F63 */
     .stTextInput input, .stNumberInput input, .stSelectbox div[data-baseweb="select"] > div {
-        background-color: white;
-        border: 1px solid #e2e8f0;
+        background-color: #EDE7DE !important;
+        color: #8C6F63 !important;
+        border: 1px solid #8C6F63; /* Bordure de la même couleur que le texte */
         border-radius: 0.5rem;
-        color: black;
         height: 42px;
+        font-weight: 500;
     }
     
+    /* Icones dans les selectbox (flèches) */
+    .stSelectbox svg {
+        fill: #8C6F63 !important;
+    }
+
     /* Focus states */
     .stTextInput input:focus, .stNumberInput input:focus {
-        border-color: black;
+        border-color: #975424 !important; /* Couleur active au focus */
         box-shadow: none;
     }
 
-    /* Tabs Styling */
+    /* --- 4. ONGLETS (TABS) --- */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
         background-color: transparent;
-        border-bottom: 1px solid #e2e8f0;
+        border-bottom: 1px solid #EDE7DE;
         padding-bottom: 10px;
     }
     .stTabs [data-baseweb="tab"] {
         height: 40px;
         border-radius: 6px;
         padding: 0 16px;
-        font-weight: 500;
-        border: none;
-        background-color: white;
-        color: black;
+        font-weight: 600;
+        border: 1px solid #EDE7DE;
+        /* Inactif : Fond #EDE7DE, Texte #8C6F63 */
+        background-color: #EDE7DE;
+        color: #8C6F63;
     }
     .stTabs [aria-selected="true"] {
-        background-color: #0f172a;
-        color: white;
+        /* Actif : Fond #975424, Texte #FBF6EF */
+        background-color: #975424 !important;
+        color: #FBF6EF !important;
+        border-color: #975424 !important;
     }
 
-    /* Boutons Primaires */
+    /* --- 5. BOUTONS --- */
+    
+    /* Boutons Primaires (Actifs) : Fond #975424, Texte #FBF6EF */
     div.stButton > button[kind="primary"] {
-        background-color: white;
-        color: black;
+        background-color: #975424 !important;
+        color: #FBF6EF !important;
         border-radius: 0.5rem;
         border: none;
         padding: 0.5rem 1rem;
-        font-weight: 500;
+        font-weight: 600;
         transition: all 0.2s;
         height: 45px;
     }
     div.stButton > button[kind="primary"]:hover {
-        background-color: #334155;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        background-color: #7a421c !important; /* Un peu plus foncé au survol */
+        color: #FFFFFF !important;
     }
 
-    /* Boutons Secondaires */
+    /* Boutons Secondaires (Inactifs) : Fond #EDE7DE, Texte #8C6F63 */
     div.stButton > button[kind="secondary"] {
-        background-color: white;
-        color: #0f172a;
-        border: 1px solid #e2e8f0;
+        background-color: #EDE7DE !important;
+        color: #8C6F63 !important;
+        border: 1px solid #8C6F63 !important;
         border-radius: 0.5rem;
-        font-weight: 500;
+        font-weight: 600;
         height: 45px;
     }
     div.stButton > button[kind="secondary"]:hover {
-        background-color: #f1f5f9;
-        border-color: black;
+        background-color: #e0d6c8 !important;
+        border-color: #975424 !important;
+        color: #975424 !important;
     }
 
-    /* Cards */
+    /* --- 6. CARTES / CONTENEURS --- */
+    /* Fond blanc pour contraster avec le fond beige #FBF6EF de la page */
     [data-testid="stVerticalBlockBorderWrapper"] {
-        background-color: white;
+        background-color: #FFFFFF; 
         border-radius: 0.75rem;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+        border: 1px solid #EDE7DE;
+        box-shadow: 0 2px 4px rgba(151, 84, 36, 0.05); /* Ombre subtile teintée */
         padding: 1.5rem;
         margin-bottom: 1rem;
     }
 
+    /* --- 7. DIVERS --- */
+    
     /* Metrics */
     div[data-testid="stMetricValue"] {
         font-size: 1.5rem;
         font-weight: 700;
-        color: black;
+        color: #975424 !important; /* Couleur "Active" pour les prix */
     }
     div[data-testid="stMetricLabel"] {
         font-size: 0.875rem;
-        color: #64748b;
+        color: #8C6F63 !important;
     }
     
+    /* Checkbox Label */
+    .stCheckbox label {
+        color: #000000 !important;
+        font-weight: 500;
+    }
+    
+    /* Color Picker Popover z-index fix */
+    div[data-baseweb="popover"] {
+        z-index: 9999;
+    }
+
     /* Hide default elements */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
@@ -153,7 +183,8 @@ st.markdown("""
 def generer_schema_canape(type_canape, tx, ty, tz, profondeur, 
                           acc_left, acc_right, acc_bas,
                           dossier_left, dossier_bas, dossier_right,
-                          meridienne_side, meridienne_len, coussins="auto"):
+                          meridienne_side, meridienne_len, coussins="auto",
+                          couleurs=None):
     fig = plt.figure(figsize=(12, 8))
     
     try:
@@ -161,36 +192,42 @@ def generer_schema_canape(type_canape, tx, ty, tz, profondeur,
             render_Simple1(tx=tx, profondeur=profondeur, dossier=dossier_bas,
                 acc_left=acc_left, acc_right=acc_right,
                 meridienne_side=meridienne_side, meridienne_len=meridienne_len,
-                coussins=coussins, window_title="Canapé Simple")
+                coussins=coussins, window_title="Canapé Simple",
+                couleurs=couleurs)
         elif "L - Sans Angle" in type_canape:
             render_LNF(tx=tx, ty=ty, profondeur=profondeur,
                 dossier_left=dossier_left, dossier_bas=dossier_bas,
                 acc_left=acc_left, acc_bas=acc_bas,
                 meridienne_side=meridienne_side, meridienne_len=meridienne_len,
-                coussins=coussins, variant="auto", window_title="L - Sans Angle")
+                coussins=coussins, variant="auto", window_title="L - Sans Angle",
+                couleurs=couleurs)
         elif "L - Avec Angle" in type_canape:
             render_LF_variant(tx=tx, ty=ty, profondeur=profondeur,
                 dossier_left=dossier_left, dossier_bas=dossier_bas,
                 acc_left=acc_left, acc_bas=acc_bas,
                 meridienne_side=meridienne_side, meridienne_len=meridienne_len,
-                coussins=coussins, window_title="L - Avec Angle")
+                coussins=coussins, window_title="L - Avec Angle",
+                couleurs=couleurs)
         elif "U - Sans Angle" in type_canape:
             render_U(tx=tx, ty_left=ty, tz_right=tz, profondeur=profondeur,
                 dossier_left=dossier_left, dossier_bas=dossier_bas, dossier_right=dossier_right,
                 acc_left=acc_left, acc_bas=acc_bas, acc_right=acc_right,
-                coussins=coussins, variant="auto", window_title="U - Sans Angle")
+                coussins=coussins, variant="auto", window_title="U - Sans Angle",
+                couleurs=couleurs)
         elif "U - 1 Angle" in type_canape:
             render_U1F_v1(tx=tx, ty=ty, tz=tz, profondeur=profondeur,
                 dossier_left=dossier_left, dossier_bas=dossier_bas, dossier_right=dossier_right,
                 acc_left=acc_left, acc_right=acc_right,
                 meridienne_side=meridienne_side, meridienne_len=meridienne_len,
-                coussins=coussins, window_title="U - 1 Angle")
+                coussins=coussins, window_title="U - 1 Angle",
+                couleurs=couleurs)
         elif "U - 2 Angles" in type_canape:
             render_U2f_variant(tx=tx, ty_left=ty, tz_right=tz, profondeur=profondeur,
                 dossier_left=dossier_left, dossier_bas=dossier_bas, dossier_right=dossier_right,
                 acc_left=acc_left, acc_bas=acc_bas, acc_right=acc_right,
                 meridienne_side=meridienne_side, meridienne_len=meridienne_len,
-                coussins=coussins, window_title="U - 2 Angles")
+                coussins=coussins, window_title="U - 2 Angles",
+                couleurs=couleurs)
         
         fig = plt.gcf()
         return fig
@@ -240,13 +277,13 @@ with col_config:
                 elif "U" in type_canape:
                     ty = st.number_input("Retour Gauche (Ty)", 100, 600, 300, 10)
                 else:
-                    st.markdown("<div style='height: 42px; display: flex; align-items: center; color: black;'>-</div>", unsafe_allow_html=True)
+                    st.markdown("<div style='height: 42px; display: flex; align-items: center; color: #8C6F63;'>-</div>", unsafe_allow_html=True)
 
             with c3:
                 if "U" in type_canape:
                     tz = st.number_input("Retour Droit (Tz)", 100, 600, 280, 10)
                 else:
-                    st.markdown("<div style='height: 42px; display: flex; align-items: center; color: black;'>-</div>", unsafe_allow_html=True)
+                    st.markdown("<div style='height: 42px; display: flex; align-items: center; color: #8C6F63;'>-</div>", unsafe_allow_html=True)
                     
             profondeur = st.slider("Profondeur d'assise (cm)", 50, 120, 70, 5)
 
@@ -308,6 +345,27 @@ with col_config:
                 epaisseur = st.number_input("Épaisseur Assise (cm)", 15, 35, 25, 5)
                 
             st.markdown("---")
+            st.markdown("**Personnalisation des Couleurs**")
+            
+            # Sélecteurs de couleurs avec les codes HEX par défaut adaptés au thème
+            col_c1, col_c2, col_c3, col_c4 = st.columns(4)
+            with col_c1:
+                c_assise = st.color_picker("Assise", "#f6f6f6")
+            with col_c2:
+                c_dossier = st.color_picker("Dossier", "#b8b8b8")
+            with col_c3:
+                c_acc = st.color_picker("Accoudoir", "#8f8f8f")
+            with col_c4:
+                c_coussin = st.color_picker("Coussins", "#8B7E74")
+                
+            couleurs_dict = {
+                "assise": c_assise,
+                "dossiers": c_dossier,
+                "accoudoirs": c_acc,
+                "coussins": c_coussin
+            }
+
+            st.markdown("---")
             st.markdown("**Options supplémentaires**")
             opt1, opt2, opt3 = st.columns(3)
             with opt1:
@@ -315,7 +373,7 @@ with col_config:
             with opt2:
                 nb_traversins_supp = st.number_input("Traversins extra", 0, 5, 0)
             with opt3:
-                st.write("") # Spacer
+                st.write("") 
                 st.write("") 
                 has_surmatelas = st.checkbox("Ajouter Surmatelas")
 
@@ -332,11 +390,9 @@ with col_config:
 # --- COLONNE DROITE : PRÉVISUALISATION & PRIX ---
 with col_preview:
     
-    # La "Carte" de résultat collante
     with st.container(border=True):
         st.markdown("### 👁️ Aperçu et Devis")
         
-        # Bouton de génération principale
         if st.button("🔄 Mettre à jour l'aperçu", key="generate", type="primary", use_container_width=True):
             with st.spinner("Calcul en cours..."):
                 try:
@@ -345,10 +401,10 @@ with col_preview:
                         type_canape, tx, ty, tz, profondeur,
                         acc_left, acc_right, acc_bas,
                         dossier_left, dossier_bas, dossier_right,
-                        meridienne_side, meridienne_len, type_coussins
+                        meridienne_side, meridienne_len, type_coussins,
+                        couleurs=couleurs_dict
                     )
                     
-                    # Affichage propre du matplotlib
                     st.pyplot(fig, use_container_width=True)
                     plt.close()
                     
@@ -362,19 +418,15 @@ with col_preview:
                         has_surmatelas, has_meridienne
                     )
                     
-                    # Stockage session state
                     st.session_state['prix_details'] = prix_details
 
-                    # 3. Affichage Sécurisé des Prix (évite l'erreur KeyError: 'prix_ht')
-                    # On utilise .get() pour supporter les anciennes versions de pricing.py
-                    
+                    # 3. Affichage Sécurisé des Prix
                     montant_ht = prix_details.get('prix_ht', prix_details.get('sous_total', 0))
                     montant_tva = prix_details.get('tva', 0)
                     montant_ttc = prix_details.get('total_ttc', 0)
                     
                     st.markdown("---")
                     
-                    # Affichage Prix Style "Facture"
                     p1, p2 = st.columns([2, 1])
                     with p1:
                         st.markdown("**Total HT**")
@@ -385,31 +437,25 @@ with col_preview:
                     
                     st.markdown("---")
                     
-                    # Gros Total
                     t1, t2 = st.columns([1, 2])
                     with t1:
                         st.markdown("### Total TTC")
                     with t2:
-                        st.markdown(f"<h2 style='text-align:right; color:black; margin:0;'>{montant_ttc:.2f} €</h2>", unsafe_allow_html=True)
+                        st.markdown(f"<h2 style='text-align:right; color:#975424; margin:0;'>{montant_ttc:.2f} €</h2>", unsafe_allow_html=True)
                     
-                    # Indicateurs Marge (Seulement si disponibles dans pricing.py)
                     if 'marge_ht' in prix_details:
                         with st.expander("Données internes (Marge)"):
                             m1, m2 = st.columns(2)
                             m1.metric("Coût Revient", f"{prix_details.get('cout_revient_ht', 0)} €")
                             m2.metric("Marge", f"{prix_details.get('marge_ht', 0)} €", f"{prix_details.get('taux_marge', 0)}%")
-                    else:
-                        # Message silencieux ou informatif pour le développeur
-                        pass
 
                 except Exception as e:
                     st.error(f"Oups ! Une erreur dans la configuration : {str(e)}")
 
         else:
-            # Placeholder si pas encore généré
             st.info("Cliquez sur 'Mettre à jour' pour voir votre configuration.")
             st.markdown("""
-                <div style="background-color: white; border-radius: 8px; height: 300px; display: flex; align-items: center; justify-content: center; color: black;">
+                <div style="background-color: #EDE7DE; border-radius: 8px; height: 300px; display: flex; align-items: center; justify-content: center; color: #8C6F63; border: 1px dashed #8C6F63;">
                     Aperçu du schéma ici
                 </div>
             """, unsafe_allow_html=True)
@@ -421,19 +467,26 @@ with col_preview:
         else:
             with st.spinner("Génération du PDF..."):
                 try:
-                    # Régénération propre pour le PDF
+                    # Utilisation des couleurs pour le PDF aussi
+                    couleurs_pdf = {
+                        "assise": c_assise,
+                        "dossiers": c_dossier,
+                        "accoudoirs": c_acc,
+                        "coussins": c_coussin
+                    }
+
                     fig_pdf = generer_schema_canape(
                         type_canape, tx, ty, tz, profondeur,
                         acc_left, acc_right, acc_bas,
                         dossier_left, dossier_bas, dossier_right,
-                        meridienne_side, meridienne_len, type_coussins
+                        meridienne_side, meridienne_len, type_coussins,
+                        couleurs=couleurs_pdf
                     )
                     img_buffer = BytesIO()
                     fig_pdf.savefig(img_buffer, format='png', bbox_inches='tight', dpi=150)
                     img_buffer.seek(0)
                     plt.close(fig_pdf)
                     
-                    # Recalcul pour être sûr
                     prix_final = calculer_prix_total(
                         type_canape, tx, ty, tz, profondeur,
                         type_coussins, type_mousse, epaisseur,
