@@ -84,7 +84,7 @@ st.markdown("""
         font-weight: 500;
         border: none;
         background-color: white;
-        color: black;
+        color: black !important;
     }
     .stTabs [aria-selected="true"] {
         background-color: #0f172a;
@@ -94,7 +94,7 @@ st.markdown("""
     /* Boutons Primaires */
     div.stButton > button[kind="primary"] {
         background-color: white;
-        color: black;
+        color: black !important;
         border-radius: 0.5rem;
         border: none;
         padding: 0.5rem 1rem;
@@ -118,7 +118,7 @@ st.markdown("""
     }
     div.stButton > button[kind="secondary"]:hover {
         background-color: #f1f5f9;
-        border-color: black;
+        border-color: black !important;
     }
 
     /* Cards */
@@ -135,7 +135,7 @@ st.markdown("""
     div[data-testid="stMetricValue"] {
         font-size: 1.5rem;
         font-weight: 700;
-        color: black;
+        color: black !important;
     }
     div[data-testid="stMetricLabel"] {
         font-size: 0.875rem;
@@ -243,13 +243,13 @@ with col_config:
                 elif "U" in type_canape:
                     ty = st.number_input("Retour Gauche (Ty)", 100, 600, 300, 10)
                 else:
-                    st.markdown("<div style='height: 42px; display: flex; align-items: center; color: black;'>-</div>", unsafe_allow_html=True)
+                    st.markdown("<div style='height: 42px; display: flex; align-items: center; color: black !important;'>-</div>", unsafe_allow_html=True)
 
             with c3:
                 if "U" in type_canape:
                     tz = st.number_input("Retour Droit (Tz)", 100, 600, 280, 10)
                 else:
-                    st.markdown("<div style='height: 42px; display: flex; align-items: center; color: black;'>-</div>", unsafe_allow_html=True)
+                    st.markdown("<div style='height: 42px; display: flex; align-items: center; color: black !important;'>-</div>", unsafe_allow_html=True)
                     
             profondeur = st.slider("Profondeur d'assise (cm)", 50, 120, 70, 5)
 
