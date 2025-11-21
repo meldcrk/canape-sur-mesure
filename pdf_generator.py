@@ -45,7 +45,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         'PriceStyle',
         parent=styles['Heading2'],
         fontSize=16,
-        alignment=TA_RIGHT,
+        alignment=TA_CENTER,
         fontName='Helvetica',
         textColor=colors.black,
         spaceBefore=10,
