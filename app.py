@@ -48,12 +48,14 @@ st.markdown("""
     }
 
     /* Titres */
-    h1, h2, h3, p {
+    h1, h2, h3 {
         font-weight: 700;
         letter-spacing: -0.025em;
         color: black !important;
     }
     h1 { margin-bottom: 1.5rem !important; }
+
+    p { color; black; }
 
     /* Input Fields Styling */
     .stTextInput input, .stNumberInput input, .stSelectbox div[data-baseweb="select"] > div {
@@ -94,7 +96,7 @@ st.markdown("""
     /* Boutons Primaires */
     div.stButton > button[kind="primary"] {
         background-color: white;
-        color: black !important;
+        color: black;
         border-radius: 0.5rem;
         border: none;
         padding: 0.5rem 1rem;
@@ -118,7 +120,7 @@ st.markdown("""
     }
     div.stButton > button[kind="secondary"]:hover {
         background-color: #f1f5f9;
-        border-color: black !important;
+        border-color: black;
     }
 
     /* Cards */
