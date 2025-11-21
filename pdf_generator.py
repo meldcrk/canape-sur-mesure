@@ -23,7 +23,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     
     # --- DÉFINITION DES STYLES ---
     title_style = ParagraphStyle('CustomTitle', parent=styles['Heading1'], fontSize=14, textColor=colors.black, spaceAfter=10, alignment=TA_CENTER, fontName='Helvetica-Bold')
-    header_info_style = ParagraphStyle('HeaderInfo', parent=styles['Normal'], fontSize=12, leading=14, textColor=colors.black, alignment=TA_CENTER)
+    header_info_style = ParagraphStyle('HeaderInfo', parent=styles['Normal'], fontSize=12, leading=14, textColor=colors.black, alignment=TA_CENTER, spaceAfter=10)
     price_style = ParagraphStyle('PriceStyle', parent=styles['Heading2'], fontSize=16, alignment=TA_CENTER, fontName='Helvetica', textColor=colors.black, spaceBefore=10, spaceAfter=10)
     
     # Styles pour le pied de page
