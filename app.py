@@ -39,12 +39,12 @@ st.markdown("""
     /* Global Reset & Font */
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
-        color: #00000;
+        color: black;
     }
     
     /* Fond général */
     .stApp {
-        background-color: black;
+        background-color: white;
     }
 
     /* Titres */
