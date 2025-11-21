@@ -48,14 +48,12 @@ st.markdown("""
     }
 
     /* Titres */
-    h1, h2, h3 {
-        font-weight: 700;
+    h1, h2, h3, p {
+        font-weight: 500;
         letter-spacing: -0.025em;
         color: black !important;
     }
     h1 { margin-bottom: 1.5rem !important; }
-
-    p { color; black !important; }
 
     /* Input Fields Styling */
     .stTextInput input, .stNumberInput input, .stSelectbox div[data-baseweb="select"] > div {
