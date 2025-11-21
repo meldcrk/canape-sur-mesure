@@ -44,14 +44,42 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     styles = getSampleStyleSheet()
     
     # --- DÉFINITION DES STYLES ---
-    title_style = ParagraphStyle('CustomTitle', parent=styles['Heading1'], fontSize=14, textColor=colors.black, spaceAfter=10, alignment=TA_CENTER, fontName='Helvetica-Bold')
-    header_info_style = ParagraphStyle('HeaderInfo', parent=styles['Normal'], fontSize=12, leading=14, textColor=colors.black, alignment=TA_CENTER, spaceAfter=10)
-    price_style = ParagraphStyle('PriceStyle', parent=styles['Heading2'], fontSize=16, alignment=TA_CENTER, fontName='Helvetica', textColor=colors.black, spaceBefore=10, spaceAfter=10)
+    title_style = ParagraphStyle(
+        'CustomTitle', parent=styles['Heading1'], fontSize=14, textColor=colors.black, 
+        spaceAfter=5, alignment=TA_CENTER, fontName=BASE_FONT + '-Bold'
+    )
+    
+    header_info_style = ParagraphStyle(
+        'HeaderInfo', parent=styles['Normal'], fontSize=12, leading=14, 
+        textColor=colors.black, alignment=TA_CENTER, fontName=BASE_FONT
+    )
+    
+    price_style = ParagraphStyle(
+        'PriceStyle', parent=styles['Heading2'], fontSize=16, alignment=TA_CENTER, 
+        fontName=BASE_FONT, textColor=colors.black, spaceBefore=10, spaceAfter=10
+    )
+    
+    # Style de description de mousse
+    description_mousse_style = ParagraphStyle(
+        'MousseDesc', parent=styles['Normal'], fontSize=12, leading=10, 
+        textColor=colors.black, alignment=TA_LEFT, fontName=BASE_FONT
+    )
     
     # Styles pour le pied de page
-    column_header_style = ParagraphStyle('ColumnHeaderStyle', parent=styles['Normal'], fontSize=12, fontName='Helvetica-Bold', alignment=TA_LEFT, spaceAfter=4)
-    detail_style = ParagraphStyle('DetailStyle', parent=styles['Normal'], fontSize=12, leading=14, textColor=colors.black, alignment=TA_LEFT)
-    footer_style = ParagraphStyle('FooterStyle', parent=styles['Normal'], fontSize=12, textColor=colors.black, alignment=TA_CENTER)
+    column_header_style = ParagraphStyle(
+        'ColumnHeaderStyle', parent=styles['Normal'], fontSize=12, alignment=TA_LEFT, 
+        fontName=BASE_FONT + '-Bold', spaceAfter=10
+    )
+
+    detail_style = ParagraphStyle(
+        'DetailStyle', parent=styles['Normal'], fontSize=12, leading=12, 
+        textColor=colors.black, alignment=TA_LEFT, fontName=BASE_FONT
+    )
+    
+    footer_style = ParagraphStyle(
+        'FooterStyle', parent=styles['Normal'], fontSize=12, textColor=colors.black, 
+        alignment=TA_CENTER, spaceBefore=5, fontName=BASE_FONT
+    )
 
     # --- FONCTION INTERNE POUR DESSINER LE PIED DE PAGE FIXE ---
     def draw_footer(canvas, doc):
@@ -61,7 +89,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         
         # Colonne Gauche
         col_gauche = []
-        col_gauche.append(Paragraph("Ce que le tarif comprend :", column_header_style))
+        col_gauche.append(Paragraph("Il faut savoir que le tarif comprend :", column_header_style))
         inclus_items = [
             "Livraison bas d'immeuble",
             "Fabrication 100% artisanale France",
