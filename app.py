@@ -73,7 +73,7 @@ st.markdown("""
 
     /* Focus states */
     .stTextInput input:focus, .stNumberInput input:focus {
-        border-color: #975424 !important; /* Couleur active au focus */
+        border-color: #CF661B !important; /* Couleur active au focus */
         box-shadow: none;
     }
 
@@ -95,17 +95,17 @@ st.markdown("""
         color: #8C6F63;
     }
     .stTabs [aria-selected="true"] {
-        /* Actif : Fond #975424, Texte #FBF6EF */
-        background-color: #975424 !important;
+        /* Actif : Fond #CF661B, Texte #FBF6EF */
+        background-color: #CF661B !important;
         color: #FBF6EF !important;
-        border-color: #975424 !important;
+        border-color: #CF661B !important;
     }
 
     /* --- 5. BOUTONS --- */
     
-    /* Boutons Primaires (Actifs) : Fond #975424, Texte #FBF6EF */
+    /* Boutons Primaires (Actifs) : Fond #CF661B, Texte #FBF6EF */
     div.stButton > button[kind="primary"] {
-        background-color: #975424 !important;
+        background-color: #CF661B !important;
         color: #FBF6EF !important;
         border-radius: 0.5rem;
         border: none;
@@ -130,8 +130,8 @@ st.markdown("""
     }
     div.stButton > button[kind="secondary"]:hover {
         background-color: #e0d6c8 !important;
-        border-color: #975424 !important;
-        color: #975424 !important;
+        border-color: #CF661B !important;
+        color: #CF661B !important;
     }
 
     /* --- 6. CARTES / CONTENEURS --- */
@@ -151,7 +151,7 @@ st.markdown("""
     div[data-testid="stMetricValue"] {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #975424 !important; /* Couleur "Active" pour les prix */
+        color: #CF661B !important; /* Couleur "Active" pour les prix */
     }
     div[data-testid="stMetricLabel"] {
         font-size: 0.875rem;
@@ -441,7 +441,7 @@ with col_preview:
                     with t1:
                         st.markdown("### Total TTC")
                     with t2:
-                        st.markdown(f"<h2 style='text-align:right; color:#975424; margin:0;'>{montant_ttc:.2f} €</h2>", unsafe_allow_html=True)
+                        st.markdown(f"<h2 style='text-align:right; color:#CF661B; margin:0;'>{montant_ttc:.2f} €</h2>", unsafe_allow_html=True)
                     
                     if 'marge_ht' in prix_details:
                         with st.expander("Données internes (Marge)"):
