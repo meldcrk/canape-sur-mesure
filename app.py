@@ -368,6 +368,13 @@ with col_preview:
                     # Stockage session state
                     st.session_state['prix_details'] = prix_details
 
+                    # 3. Affichage Sécurisé des Prix (évite l'erreur KeyError: 'prix_ht')
+                    # On utilise .get() pour supporter les anciennes versions de pricing.py
+                    
+                    montant_ht = prix_details.get('prix_ht', prix_details.get('sous_total', 0))
+                    montant_tva = prix_details.get('tva', 0)
+                    montant_ttc = prix_details.get('total_ttc', 0)
+                    
                     st.markdown("---")
                     
                     # Affichage Prix Style "Facture"
@@ -376,8 +383,8 @@ with col_preview:
                         st.markdown("**Total HT**")
                         st.markdown("TVA (20%)")
                     with p2:
-                        st.markdown(f"<div style='text-align:right'>{prix_details['prix_ht']:.2f} €</div>", unsafe_allow_html=True)
-                        st.markdown(f"<div style='text-align:right'>{prix_details['tva']:.2f} €</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div style='text-align:right'>{montant_ht:.2f} €</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div style='text-align:right'>{montant_tva:.2f} €</div>", unsafe_allow_html=True)
                     
                     st.markdown("---")
                     
@@ -386,13 +393,17 @@ with col_preview:
                     with t1:
                         st.markdown("### Total TTC")
                     with t2:
-                        st.markdown(f"<h2 style='text-align:right; color:#0f172a; margin:0;'>{prix_details['total_ttc']:.2f} €</h2>", unsafe_allow_html=True)
+                        st.markdown(f"<h2 style='text-align:right; color:#0f172a; margin:0;'>{montant_ttc:.2f} €</h2>", unsafe_allow_html=True)
                     
-                    # Indicateurs Marge
-                    with st.expander("Données internes (Marge)"):
-                        m1, m2 = st.columns(2)
-                        m1.metric("Coût Revient", f"{prix_details['cout_revient_ht']} €")
-                        m2.metric("Marge", f"{prix_details['marge_ht']} €", f"{prix_details['taux_marge']}%")
+                    # Indicateurs Marge (Seulement si disponibles dans pricing.py)
+                    if 'marge_ht' in prix_details:
+                        with st.expander("Données internes (Marge)"):
+                            m1, m2 = st.columns(2)
+                            m1.metric("Coût Revient", f"{prix_details.get('cout_revient_ht', 0)} €")
+                            m2.metric("Marge", f"{prix_details.get('marge_ht', 0)} €", f"{prix_details.get('taux_marge', 0)}%")
+                    else:
+                        # Message silencieux ou informatif pour le développeur
+                        pass
 
                 except Exception as e:
                     st.error(f"Oups ! Une erreur dans la configuration : {str(e)}")
