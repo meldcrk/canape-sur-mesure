@@ -6,6 +6,15 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 from io import BytesIO
 
+# --- NOUVEAU : MAPPING DES IMAGES ---
+IMAGE_FILES = {
+    'D25': 'D25.png',
+    'D30': 'D30.png',
+    'HR35': 'HR35.png',
+    'HR45': 'HR45.png'
+}
+# Assurez-vous d'avoir un dossier 'images' et des fichiers nommés comme ci-dessus (ex: mousse_HR35.png)
+
 def generer_pdf_devis(config, prix_details, schema_image=None):
     """
     Génère un PDF de devis (1 page) avec un pied de page fixe en bas.
