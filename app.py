@@ -29,6 +29,120 @@ st.set_page_config(
 # Injection de CSS pour imiter le style Lovable (Shadcn UI) + Style des Tabs
 st.markdown("""
 <style>
+
+    /* Import de la police Inter */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    /* Global Reset & Font */
+    html, body, [class*="css"] {
+        font-family: 'Inter', sans-serif;
+        color: black;
+    }
+    
+    /* Fond général */
+    .stApp {
+        background-color: #EDE8E1;
+    }
+
+    /* Titres */
+    h1, h2, h3, p {
+        font-weight: 500;
+        letter-spacing: -0.025em;
+        color: black;
+    }
+    h1 { margin-bottom: 1.5rem !important; }
+
+    /* Input Fields Styling */
+    .stTextInput input, .stNumberInput input, .stSelectbox div[data-baseweb="select"] > div {
+        background-color: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        color: black;
+        height: 42px;
+    }
+    
+    /* Focus states */
+    .stTextInput input:focus, .stNumberInput input:focus {
+        border-color: black;
+        box-shadow: none;
+    }
+
+    /* Tabs Styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        background-color: transparent;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 10px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        height: 40px;
+        border-radius: 6px;
+        padding: 0 16px;
+        font-weight: 500;
+        border: none;
+        background-color: white;
+        color: black;
+    }
+    .stTabs [aria-selected="true"] {
+        background-color: #0f172a;
+        color: white;
+    }
+
+    /* Boutons Primaires */
+    div.stButton > button[kind="primary"] {
+        background-color: white;
+        color: black;
+        border-radius: 0.5rem;
+        border: none;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        transition: all 0.2s;
+        height: 45px;
+    }
+    div.stButton > button[kind="primary"]:hover {
+        background-color: #334155;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Boutons Secondaires */
+    div.stButton > button[kind="secondary"] {
+        background-color: white;
+        color: #0f172a;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        height: 45px;
+    }
+    div.stButton > button[kind="secondary"]:hover {
+        background-color: #f1f5f9;
+        border-color: black;
+    }
+
+    /* Cards */
+    [data-testid="stVerticalBlockBorderWrapper"] {
+        background-color: white;
+        border-radius: 0.75rem;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Metrics */
+    div[data-testid="stMetricValue"] {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: black;
+    }
+    div[data-testid="stMetricLabel"] {
+        font-size: 0.875rem;
+        color: #64748b;
+    }
+    
+    /* Hide default elements */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
