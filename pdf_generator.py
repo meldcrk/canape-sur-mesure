@@ -1,9 +1,9 @@
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.units import cm
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image, PageBreak
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT, TA_JUSTIFY
+from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 from io import BytesIO
 
 def generer_pdf_devis(config, prix_details, schema_image=None):
@@ -78,7 +78,6 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     elements.append(Spacer(1, 0.5*cm))
     
     # =================== 2. BLOC INFORMATIONS (HAUT) ===================
-    # [cite_start]Construction des chaînes de texte selon la configuration [cite: 1, 2, 3, 4, 5, 6, 7, 8, 9, 11]
     
     # Dimensions formatées
     type_canape = config['type_canape']
@@ -90,20 +89,32 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     else:
         dim_str = f"{dims.get('tx',0)}x{dims.get('profondeur',0)}"
         
-    # Infos techniques regroupées
+    # Préparation des variables pour éviter les f-strings complexes
     mousse = config['options'].get('type_mousse', 'HR35')
+    
+    dossier_txt = 'Sans'
+    if config['options'].get('dossier_bas'):
+        dossier_txt = 'Avec'
+        
+    accoudoirs_txt = 'Non'
+    if config['options'].get('acc_left') or config['options'].get('acc_right'):
+        accoudoirs_txt = 'Oui'
+
+    # Infos techniques regroupées
     infos_techniques = [
         f"<b>Dimensions:</b> {dim_str} cm",
         f"<b>Confort:</b> {mousse} (Haute résilience - Garantie 6 ans)",
-        f"<b>Dossiers:</b> {'Avec' if config['options'].get('dossier_bas') else 'Sans'}",
-        f"<b>Accoudoirs:</b> {'Oui' if config['options'].get('acc_left') or config['options'].get('acc_right') else 'Non'}"
+        f"<b>Dossiers:</b> {dossier_txt}",
+        f"<b>Accoudoirs:</b> {accoudoirs_txt}"
     ]
     
     # Infos client
     client = config['client']
     infos_client = []
-    if client['nom']: infos_client.append(f"<b>Nom:</b> {client['nom']}")
-    if client['email']: infos_client.append(f"<b>Email:</b> {client['email']}")
+    if client['nom']: 
+        infos_client.append(f"<b>Nom:</b> {client['nom']}")
+    if client['email']: 
+        infos_client.append(f"<b>Email:</b> {client['email']}")
     
     # Assemblage du texte centré
     full_header_text = "<br/>".join(infos_techniques)
@@ -112,9 +123,8 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         
     elements.append(Paragraph(full_header_text, header_info_style))
     
-    # [cite_start]Petit texte descriptif mousse (optionnel, pour imiter l'exemple) [cite: 12, 13, 14]
-    desc_mousse = f"""<br/>La mousse {mousse} est une mousse haute résilience. 
-    Elle est semi-ferme confortable, parfaite pour les adeptes des salons confortables."""
+    # Petit texte descriptif mousse
+    desc_mousse = f"<br/>La mousse {mousse} est une mousse haute résilience.<br/>Elle est semi-ferme confortable, parfaite pour les adeptes des salons confortables."
     elements.append(Paragraph(f"<i>{desc_mousse}</i>", header_info_style))
     
     elements.append(Spacer(1, 0.5*cm))
@@ -123,10 +133,14 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     if schema_image:
         try:
             img = Image(schema_image)
-            # Calcul pour que l'image prenne une bonne largeur sans dépasser
             # Largeur page A4 = 21cm - marges (3cm) = 18cm dispo
             max_width = 17 * cm 
-            aspect_ratio = img.imageHeight / float(img.imageWidth)
+            # Calcul ratio pour éviter erreur division par zéro
+            if img.imageWidth > 0:
+                aspect_ratio = img.imageHeight / float(img.imageWidth)
+            else:
+                aspect_ratio = 0.5
+                
             img.drawWidth = max_width
             img.drawHeight = max_width * aspect_ratio
             
@@ -150,7 +164,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     prix_data.append(['TVA (20%)', f"{prix_details['tva']:.2f} €"])
     prix_data.append(['TOTAL TTC', f"{prix_details['total_ttc']:.2f} €"])
     
-    # Style du tableau (minimaliste et propre)
+    # Style du tableau
     table_prix = Table(prix_data, colWidths=[13*cm, 4*cm])
     table_style = [
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
@@ -166,8 +180,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     elements.append(Spacer(1, 1*cm))
 
     # =================== 5. BAS DE PAGE (2 COLONNES) ===================
-    # [cite_start]Reproduit exactement le contenu des exemples fournis [cite: 36, 37, 38, 39, 40, 45]
-
+    
     # --- Colonne Gauche : Ce que le tarif comprend ---
     col_gauche = []
     col_gauche.append(Paragraph("Il faut savoir que le tarif remisé comprend :", column_header_style))
@@ -181,22 +194,24 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         "Housses de matelas et coussins déhoussables"
     ]
     for item in inclus_items:
-        # On ajoute une puce visuelle ou textuelle
         col_gauche.append(Paragraph(f"• {item}", detail_style))
 
     # --- Colonne Droite : Cotations techniques ---
     col_droite = []
     col_droite.append(Paragraph("Voici le détail des cotations de votre canapé :", column_header_style))
     
-    # Récupération dynamique si possible, sinon valeurs standards de l'exemple
+    # Calcul hauteur assise
     h_mousse = config['options'].get('epaisseur', 25)
+    h_assise = 46
+    if h_mousse <= 20:
+        h_assise = 40
     
     cotations_items = [
         "15 cm = largeur d'accoudoir, hauteur = 60 cm",
         "10 cm = largeur de dossier, hauteur = 70 cm",
         "65 cm / 80 cm / 90 cm = taille des coussins",
         f"{config['dimensions']['profondeur']} cm = profondeur d'assise",
-        f"{46 if h_mousse > 20 else 40} cm = hauteur d'assises, hauteur de mousse = {h_mousse} cm"
+        f"{h_assise} cm = hauteur d'assises, hauteur de mousse = {h_mousse} cm"
     ]
     for item in cotations_items:
         col_droite.append(Paragraph(f"{item}", detail_style))
@@ -213,7 +228,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     elements.append(Spacer(1, 0.5*cm))
     
     # =================== 6. FOOTER VILLE ===================
-    [cite_start]elements.append(Paragraph("FRÉVENT 62270", footer_style)) # [cite: 46]
+    elements.append(Paragraph("FRÉVENT 62270", footer_style))
     
     # Génération
     doc.build(elements)
