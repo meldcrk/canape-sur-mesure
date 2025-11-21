@@ -17,12 +17,11 @@ IMAGE_FILES = {
 
 def generer_pdf_devis(config, prix_details, schema_image=None):
     """
-    Génère un PDF de devis (1 page) avec un pied de page fixe en bas.
+    Génère un PDF de devis (1 page) avec un pied de page fixe en bas et des images de mousse.
     """
     buffer = BytesIO()
     
-    # IMPORTANT : On augmente la marge du bas (bottomMargin) à 6cm
-    # pour réserver l'espace nécessaire au pied de page fixe.
+    # On augmente la marge du bas (bottomMargin) à 6cm pour le pied de page fixe.
     doc = SimpleDocTemplate(buffer, pagesize=A4,
                            rightMargin=1*cm, leftMargin=1*cm,
                            topMargin=1*cm, bottomMargin=6*cm)
@@ -31,14 +30,17 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     styles = getSampleStyleSheet()
     
     # --- DÉFINITION DES STYLES ---
-    title_style = ParagraphStyle('CustomTitle', parent=styles['Heading1'], fontSize=14, textColor=colors.black, spaceAfter=10, alignment=TA_CENTER, fontName='Helvetica-Bold')
-    header_info_style = ParagraphStyle('HeaderInfo', parent=styles['Normal'], fontSize=12, leading=14, textColor=colors.black, alignment=TA_CENTER, spaceAfter=10)
-    price_style = ParagraphStyle('PriceStyle', parent=styles['Heading2'], fontSize=16, alignment=TA_CENTER, fontName='Helvetica', textColor=colors.black, spaceBefore=10, spaceAfter=10)
+    title_style = ParagraphStyle('CustomTitle', parent=styles['Heading1'], fontSize=14, textColor=colors.black, spaceAfter=5, alignment=TA_CENTER, fontName='Helvetica-Bold')
+    header_info_style = ParagraphStyle('HeaderInfo', parent=styles['Normal'], fontSize=10, leading=14, textColor=colors.black, alignment=TA_CENTER)
+    price_style = ParagraphStyle('PriceStyle', parent=styles['Heading2'], fontSize=16, alignment=TA_RIGHT, fontName='Helvetica-Bold', textColor=colors.black, spaceBefore=10, spaceAfter=10)
+    
+    # Style spécifique pour la description de mousse (aligné à gauche pour une meilleure lisibilité)
+    description_mousse_style = ParagraphStyle('MousseDesc', parent=styles['Normal'], fontSize=9, leading=11, textColor=colors.black, alignment=TA_LEFT)
     
     # Styles pour le pied de page
-    column_header_style = ParagraphStyle('ColumnHeaderStyle', parent=styles['Normal'], fontSize=12, fontName='Helvetica-Bold', alignment=TA_LEFT, spaceAfter=4)
-    detail_style = ParagraphStyle('DetailStyle', parent=styles['Normal'], fontSize=12, leading=14, textColor=colors.black, alignment=TA_LEFT)
-    footer_style = ParagraphStyle('FooterStyle', parent=styles['Normal'], fontSize=12, textColor=colors.black, alignment=TA_CENTER)
+    column_header_style = ParagraphStyle('ColumnHeaderStyle', parent=styles['Normal'], fontSize=9, fontName='Helvetica-Bold', alignment=TA_LEFT, spaceAfter=2)
+    detail_style = ParagraphStyle('DetailStyle', parent=styles['Normal'], fontSize=8, leading=10, textColor=colors.black, alignment=TA_LEFT)
+    footer_style = ParagraphStyle('FooterStyle', parent=styles['Normal'], fontSize=9, textColor=colors.black, alignment=TA_CENTER)
 
     # --- FONCTION INTERNE POUR DESSINER LE PIED DE PAGE FIXE ---
     def draw_footer(canvas, doc):
@@ -48,21 +50,21 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         
         # Colonne Gauche
         col_gauche = []
-        col_gauche.append(Paragraph("Il faut savoir que le tarif comprend :", column_header_style))
+        col_gauche.append(Paragraph("Ce que le tarif comprend :", column_header_style))
         inclus_items = [
-            "Livraison bas d'immeuble 📦",
-            "Fabrication 100% artisanale France 🛋️",
-            "Choix du tissu qui n'impacte pas le devis ✨",
-            "Possibilité de payer en 2 à 6 fois sans frais 👍",
-            "Livraison en 5 à 7 semaines 😁",
-            "Housses de matelas et coussins déhoussables 🌱"
+            "Livraison bas d'immeuble",
+            "Fabrication 100% artisanale France",
+            "Choix du tissu n'impacte pas le devis",
+            "Paiement 2 à 6 fois sans frais",
+            "Livraison 5 à 7 semaines",
+            "Housses déhoussables"
         ]
         for item in inclus_items:
             col_gauche.append(Paragraph(f"• {item}", detail_style))
 
         # Colonne Droite
         col_droite = []
-        col_droite.append(Paragraph("Détail des cotations du canapé:", column_header_style))
+        col_droite.append(Paragraph("Détail des cotations :", column_header_style))
         
         h_mousse = config['options'].get('epaisseur', 25)
         h_assise = 46 if h_mousse > 20 else 40
@@ -86,7 +88,6 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         ]))
         
         # Calcul de la taille et dessin
-        # On le dessine à 2cm du bas de la page (juste au-dessus de la ville)
         w, h = table_footer.wrap(doc.width, doc.bottomMargin)
         table_footer.drawOn(canvas, doc.leftMargin, 1.5*cm)
         
@@ -97,7 +98,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         
         canvas.restoreState()
 
-# =================== CONTENU DU DOCUMENT ===================
+    # =================== CONTENU DU DOCUMENT ===================
     
     # 1. TITRE
     elements.append(Paragraph("MON CANAPÉ MAROCAIN", title_style))
