@@ -95,7 +95,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     else:
         dim_str = f"{dims.get('tx',0)}x{dims.get('profondeur',0)}"
         
-    mousse = config['options'].get('type_mousse', 'HR35')
+    mousse_type = config['options'].get('type_mousse', 'HR35')
     
     # Textes Oui/Non/Avec/Sans
     dossier_txt = 'Avec' if config['options'].get('dossier_bas') else 'Sans'
@@ -104,7 +104,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     # Bloc technique
     infos_techniques = [
         f"<b>Dimensions:</b> {dim_str} cm",
-        f"<b>Confort:</b> {mousse} (Haute résilience - Garantie 6 ans)",
+        f"<b>Confort:</b> {mousse_type}",
         f"<b>Dossiers:</b> {dossier_txt} &nbsp;&nbsp; | &nbsp;&nbsp; <b>Accoudoirs:</b> {acc_txt}"
     ]
     
@@ -120,9 +120,19 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         
     elements.append(Paragraph(full_header_text, header_info_style))
     
-    # Description mousse
-    desc_mousse = f"<i>La mousse {mousse} est une mousse haute résilience semi-ferme confortable.</i>"
-    elements.append(Paragraph(desc_mousse, header_info_style))
+    # --- GESTION DYNAMIQUE DES DESCRIPTIONS DE MOUSSE ---
+    descriptions_mousse = {
+        'D25': "La mousse D25 est une mousse polyuréthane de 25kg/m3. Elle est très ferme, parfaite pour les habitués des banquettes marocaines classiques.",
+        'D30': "La mousse D30 est une mousse polyuréthane de 30kg/m3. Elle est ultra ferme, idéale pour ceux qui recherchent un canapé très ferme.",
+        'HR35': "La mousse HR35 est une mousse haute résilience de 35kg/m3. Elle est semi ferme confortable, parfaite pour les adeptes des salons confortables.<br/>Les mousses haute résilience reprennent rapidement leur forme initiale et donc limitent l’affaissement dans le temps.",
+        'HR45': "La mousse HR45 est une mousse haute résilience de 45kg/m3. Elle est ferme confortable, parfaite pour les adeptes des salons confortables mais pas trop moelleux.<br/>Les mousses haute résilience reprennent rapidement leur forme initiale et donc limitent l’affaissement dans le temps."
+    }
+    
+    # Récupération du texte correspondant, ou HR35 par défaut
+    texte_mousse = descriptions_mousse.get(mousse_type, descriptions_mousse['HR35'])
+    
+    elements.append(Spacer(1, 0.2*cm))
+    elements.append(Paragraph(f"<i>{texte_mousse}</i>", header_info_style))
     
     elements.append(Spacer(1, 0.3*cm))
 
@@ -131,14 +141,19 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         try:
             img = Image(schema_image)
             # On limite la hauteur pour être sûr que ça tienne sur une page
-            # Largeur max 18cm, Hauteur max 12cm
+            # Largeur max 18cm, Hauteur max 11cm
             avail_width = 18 * cm
             avail_height = 11 * cm 
             
             img_w = img.imageWidth
             img_h = img.imageHeight
-            aspect = img_h / float(img_w)
             
+            # Sécurité pour éviter division par zéro
+            if img_w > 0:
+                aspect = img_h / float(img_w)
+            else:
+                aspect = 1.0
+
             if aspect > (avail_height / avail_width):
                 # Limité par la hauteur
                 img.drawHeight = avail_height
