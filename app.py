@@ -30,7 +30,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Injection de CSS pour imiter le style Lovable (Shadcn UI)
 st.markdown("""
 <style>
     /* Import de la police Inter */
@@ -44,14 +43,14 @@ st.markdown("""
     
     /* Fond général légèrement grisé pour faire ressortir les cartes */
     .stApp {
-        background-color: #f8fafc;
+        background-color: #fffff;
     }
 
     /* Titres */
     h1, h2, h3 {
         font-weight: 700;
         letter-spacing: -0.025em;
-        color: #0f172a;
+        color: #00000;
     }
     h1 { margin-bottom: 1.5rem !important; }
 
@@ -60,7 +59,7 @@ st.markdown("""
         background-color: #ffffff;
         border: 1px solid #e2e8f0;
         border-radius: 0.5rem;
-        color: #0f172a;
+        color: #00000;
         height: 42px;
     }
     
@@ -72,8 +71,8 @@ st.markdown("""
 
     /* Boutons Primaires (Noir/Blanc comme Shadcn) */
     div.stButton > button[kind="primary"] {
-        background-color: #0f172a;
-        color: white;
+        background-color: #fffff;
+        color: #00000;
         border-radius: 0.5rem;
         border: none;
         padding: 0.5rem 1rem;
