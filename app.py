@@ -39,7 +39,7 @@ st.markdown("""
     /* Global Reset & Font */
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
-        color: black;
+        color: black !important;
     }
     
     /* Fond général */
