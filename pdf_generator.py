@@ -27,8 +27,8 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     price_style = ParagraphStyle('PriceStyle', parent=styles['Heading2'], fontSize=16, alignment=TA_CENTER, fontName='Helvetica', textColor=colors.black, spaceBefore=10, spaceAfter=10)
     
     # Styles pour le pied de page
-    column_header_style = ParagraphStyle('ColumnHeaderStyle', parent=styles['Normal'], fontSize=12, fontName='Helvetica-Bold', alignment=TA_LEFT, spaceAfter=2)
-    detail_style = ParagraphStyle('DetailStyle', parent=styles['Normal'], fontSize=12, leading=10, textColor=colors.black, alignment=TA_LEFT)
+    column_header_style = ParagraphStyle('ColumnHeaderStyle', parent=styles['Normal'], fontSize=12, fontName='Helvetica-Bold', alignment=TA_LEFT, spaceAfter=4)
+    detail_style = ParagraphStyle('DetailStyle', parent=styles['Normal'], fontSize=12, leading=14, textColor=colors.black, alignment=TA_LEFT)
     footer_style = ParagraphStyle('FooterStyle', parent=styles['Normal'], fontSize=12, textColor=colors.black, alignment=TA_CENTER)
 
     # --- FONCTION INTERNE POUR DESSINER LE PIED DE PAGE FIXE ---
