@@ -44,7 +44,7 @@ st.markdown("""
     
     /* Fond général */
     .stApp {
-        background-color: white;
+        background-color: #EDE8E1;
     }
 
     /* Titres */
