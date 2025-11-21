@@ -39,12 +39,12 @@ st.markdown("""
     /* Global Reset & Font */
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
-        color: #0f172a;
+        color: #00000;
     }
     
     /* Fond général */
     .stApp {
-        background-color: #f8fafc;
+        background-color: #fffff;
     }
 
     /* Titres */
@@ -60,7 +60,7 @@ st.markdown("""
         background-color: #ffffff;
         border: 1px solid #e2e8f0;
         border-radius: 0.5rem;
-        color: #0f172a;
+        color: #00000;
         height: 42px;
     }
     
@@ -84,7 +84,7 @@ st.markdown("""
         font-weight: 500;
         border: none;
         background-color: white;
-        color: #64748b;
+        color: #00000;
     }
     .stTabs [aria-selected="true"] {
         background-color: #0f172a !important;
@@ -93,8 +93,8 @@ st.markdown("""
 
     /* Boutons Primaires */
     div.stButton > button[kind="primary"] {
-        background-color: #0f172a;
-        color: white;
+        background-color: #fffff;
+        color: #00000;
         border-radius: 0.5rem;
         border: none;
         padding: 0.5rem 1rem;
@@ -135,7 +135,7 @@ st.markdown("""
     div[data-testid="stMetricValue"] {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #0f172a;
+        color: #00000;
     }
     div[data-testid="stMetricLabel"] {
         font-size: 0.875rem;
