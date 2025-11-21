@@ -28,7 +28,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         textColor=colors.black,
         spaceAfter=5,
         alignment=TA_CENTER,
-        fontName='Helvetica-Bold'
+        fontName='Helvetica'
     )
     
     header_info_style = ParagraphStyle(
@@ -46,7 +46,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         parent=styles['Heading2'],
         fontSize=16,
         alignment=TA_RIGHT,
-        fontName='Helvetica-Bold',
+        fontName='Helvetica',
         textColor=colors.black,
         spaceBefore=10,
         spaceAfter=10
@@ -56,7 +56,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         'ColumnHeaderStyle',
         parent=styles['Normal'],
         fontSize=9,
-        fontName='Helvetica-Bold',
+        fontName='Helvetica',
         alignment=TA_LEFT,
         spaceAfter=2
     )
