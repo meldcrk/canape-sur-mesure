@@ -97,7 +97,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         
         canvas.restoreState()
 
-    # =================== CONTENU DU DOCUMENT ===================
+# =================== CONTENU DU DOCUMENT ===================
     
     # 1. TITRE
     elements.append(Paragraph("MON CANAPÉ MAROCAIN", title_style))
@@ -140,7 +140,32 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     texte_mousse = descriptions_mousse.get(mousse_type, descriptions_mousse['HR35'])
     
     elements.append(Spacer(1, 0.2*cm))
-    elements.append(Paragraph(f"<i>{texte_mousse}</i>", header_info_style))
+    
+    # --- MODIFICATION CLÉ : IMAGE ET TEXTE EN TABLEAU ---
+    image_path = IMAGE_FILES.get(mousse_type)
+    
+    if image_path:
+        try:
+            # Réduire la taille de l'image pour qu'elle tienne à côté du texte
+            img_mousse = Image(image_path, width=2.5*cm, height=2.5*cm)
+            text_flowable = Paragraph(f"<i>{texte_mousse}</i>", description_mousse_style)
+            
+            # Créer un tableau pour l'alignement
+            mousse_table = Table([[img_mousse, text_flowable]], colWidths=[3*cm, 15*cm])
+            mousse_table.setStyle(TableStyle([
+                ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+                ('LEFTPADDING', (0, 0), (0, 0), 0),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+            ]))
+            elements.append(mousse_table)
+        except Exception:
+            # En cas d'erreur de fichier ou de chemin, revenir au texte seul
+            elements.append(Paragraph(f"<i>{texte_mousse}</i>", description_mousse_style))
+    else:
+        # Pas de chemin d'image défini, afficher seulement le texte
+        elements.append(Paragraph(f"<i>{texte_mousse}</i>", description_mousse_style))
+    # --- FIN MODIFICATION CLÉ ---
+
     elements.append(Spacer(1, 0.3*cm))
 
     # 3. SCHÉMA
@@ -176,8 +201,6 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     elements.append(Paragraph(f"PRIX TOTAL TTC : {montant_ttc}", price_style))
     elements.append(Paragraph("<hr width='100%' color='black'/>", styles['Normal']))
 
-    # Note : On n'ajoute plus les parties 5 et 6 ici (colonnes et footer)
-    # Elles sont gérées par la fonction draw_footer appelée via onFirstPage
     
     # GÉNÉRATION AVEC CALLBACK POUR LE FOOTER
     doc.build(elements, onFirstPage=draw_footer)
