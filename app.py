@@ -39,7 +39,7 @@ st.markdown("""
     /* Global Reset & Font */
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
-        color: black !important;
+        color: black;
     }
     
     /* Fond général */
@@ -55,14 +55,14 @@ st.markdown("""
     }
     h1 { margin-bottom: 1.5rem !important; }
 
-    p { color; black; }
+    p { color; black !important; }
 
     /* Input Fields Styling */
     .stTextInput input, .stNumberInput input, .stSelectbox div[data-baseweb="select"] > div {
         background-color: white;
         border: 1px solid #e2e8f0;
         border-radius: 0.5rem;
-        color: black !important;
+        color: black;
         height: 42px;
     }
     
@@ -86,7 +86,7 @@ st.markdown("""
         font-weight: 500;
         border: none;
         background-color: white;
-        color: black !important;
+        color: black;
     }
     .stTabs [aria-selected="true"] {
         background-color: #0f172a;
@@ -137,7 +137,7 @@ st.markdown("""
     div[data-testid="stMetricValue"] {
         font-size: 1.5rem;
         font-weight: 700;
-        color: black !important;
+        color: black;
     }
     div[data-testid="stMetricLabel"] {
         font-size: 0.875rem;
@@ -245,13 +245,13 @@ with col_config:
                 elif "U" in type_canape:
                     ty = st.number_input("Retour Gauche (Ty)", 100, 600, 300, 10)
                 else:
-                    st.markdown("<div style='height: 42px; display: flex; align-items: center; color: black !important;'>-</div>", unsafe_allow_html=True)
+                    st.markdown("<div style='height: 42px; display: flex; align-items: center; color: black;'>-</div>", unsafe_allow_html=True)
 
             with c3:
                 if "U" in type_canape:
                     tz = st.number_input("Retour Droit (Tz)", 100, 600, 280, 10)
                 else:
-                    st.markdown("<div style='height: 42px; display: flex; align-items: center; color: black !important;'>-</div>", unsafe_allow_html=True)
+                    st.markdown("<div style='height: 42px; display: flex; align-items: center; color: black;'>-</div>", unsafe_allow_html=True)
                     
             profondeur = st.slider("Profondeur d'assise (cm)", 50, 120, 70, 5)
 
