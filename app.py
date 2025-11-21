@@ -134,59 +134,35 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# -----------------------------------------------------------------------------
-# 2. FONCTION GENERATION SCHEMA (Inchangée)
-# -----------------------------------------------------------------------------
-
-def generer_schema_canape(type_canape, tx, ty, tz, profondeur, 
-                          acc_left, acc_right, acc_bas,
-                          dossier_left, dossier_bas, dossier_right,
-                          meridienne_side, meridienne_len, coussins="auto"):
-    fig = plt.figure(figsize=(12, 8))
-    
-    try:
-        if "Simple" in type_canape:
-            render_Simple1(tx=tx, profondeur=profondeur, dossier=dossier_bas,
-                acc_left=acc_left, acc_right=acc_right,
-                meridienne_side=meridienne_side, meridienne_len=meridienne_len,
-                coussins=coussins, window_title="Canapé Simple")
-        elif "L - Sans Angle" in type_canape:
-            render_LNF(tx=tx, ty=ty, profondeur=profondeur,
-                dossier_left=dossier_left, dossier_bas=dossier_bas,
-                acc_left=acc_left, acc_bas=acc_bas,
-                meridienne_side=meridienne_side, meridienne_len=meridienne_len,
-                coussins=coussins, variant="auto", window_title="L - Sans Angle")
-        elif "L - Avec Angle" in type_canape:
-            render_LF_variant(tx=tx, ty=ty, profondeur=profondeur,
-                dossier_left=dossier_left, dossier_bas=dossier_bas,
-                acc_left=acc_left, acc_bas=acc_bas,
-                meridienne_side=meridienne_side, meridienne_len=meridienne_len,
-                coussins=coussins, window_title="L - Avec Angle")
-        elif "U - Sans Angle" in type_canape:
-            render_U(tx=tx, ty_left=ty, tz_right=tz, profondeur=profondeur,
-                dossier_left=dossier_left, dossier_bas=dossier_bas, dossier_right=dossier_right,
-                acc_left=acc_left, acc_bas=acc_bas, acc_right=acc_right,
-                coussins=coussins, variant="auto", window_title="U - Sans Angle")
-        elif "U - 1 Angle" in type_canape:
-            render_U1F_v1(tx=tx, ty=ty, tz=tz, profondeur=profondeur,
-                dossier_left=dossier_left, dossier_bas=dossier_bas, dossier_right=dossier_right,
-                acc_left=acc_left, acc_right=acc_right,
-                meridienne_side=meridienne_side, meridienne_len=meridienne_len,
-                coussins=coussins, window_title="U - 1 Angle")
-        elif "U - 2 Angles" in type_canape:
-            render_U2f_variant(tx=tx, ty_left=ty, tz_right=tz, profondeur=profondeur,
-                dossier_left=dossier_left, dossier_bas=dossier_bas, dossier_right=dossier_right,
-                acc_left=acc_left, acc_bas=acc_bas, acc_right=acc_right,
-                meridienne_side=meridienne_side, meridienne_len=meridienne_len,
-                coussins=coussins, window_title="U - 2 Angles")
+# SECTION 2: COMPOSANTS
+    with st.container(border=True):
+        st.markdown("### 2. Accoudoirs & Dossiers")
         
-        fig = plt.gcf()
-        return fig
-        
-    except Exception as e:
-        plt.close()
-        raise Exception(f"Erreur schéma: {str(e)}")
+        ac1, ac2 = st.columns(2)
+        with ac1:
+            st.markdown("**Accoudoirs**")
+            # Ajout des keys uniques (acc_...)
+            acc_left = st.checkbox("Gauche", value=True, key="acc_gauche")
+            acc_right = st.checkbox("Droit", value=True, key="acc_droit")
+            
+            show_acc_bas = True if "L" in type_canape else ("Simple" not in type_canape)
+            if show_acc_bas:
+                acc_bas = st.checkbox("Bas (Retour)", value=True, key="acc_bas")
+            else:
+                acc_bas = False
 
+        with ac2:
+            st.markdown("**Dossiers**")
+            # Ajout des keys uniques (dos_...)
+            dossier_bas = st.checkbox("Bas (Central)", value=True, key="dos_bas")
+            
+            dossier_left = False
+            if "Simple" not in type_canape:
+                dossier_left = st.checkbox("Gauche", value=True, key="dos_gauche")
+                
+            dossier_right = False
+            if "U" in type_canape:
+                dossier_right = st.checkbox("Droit", value=True, key="dos_droit")
 # -----------------------------------------------------------------------------
 # 3. INTERFACE UTILISATEUR
 # -----------------------------------------------------------------------------
