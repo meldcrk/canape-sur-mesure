@@ -23,10 +23,10 @@ else:
 
 # --- MAPPING DES IMAGES ---
 IMAGE_FILES = {
-    'D25': 'images/mousse_D25.png',
-    'D30': 'images/mousse_D30.png',
-    'HR35': 'images/mousse_HR35.png',
-    'HR45': 'images/mousse_HR45.png'
+    'D25': 'D25.png',
+    'D30': 'D30.png',
+    'HR35': 'HR35.png',
+    'HR45': 'HR45.png'
 }
 
 
