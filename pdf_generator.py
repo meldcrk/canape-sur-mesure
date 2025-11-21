@@ -35,7 +35,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         'HeaderInfo',
         parent=styles['Normal'],
         fontSize=10,
-        leading=12,
+        leading=14,
         textColor=colors.black,
         alignment=TA_CENTER
     )
@@ -89,53 +89,49 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     
     # Formatage des dimensions
     if "U" in type_canape:
-        dim_str = f"{dims.get('ty',0)}x{dims.get('tx',0)}x{dims.get('tz',0)}"
+        dim_str = f"{dims.get('ty',0)} x {dims.get('tx',0)} x {dims.get('tz',0)}"
     elif "L" in type_canape:
-        dim_str = f"{dims.get('ty',0)}x{dims.get('tx',0)}"
+        dim_str = f"{dims.get('ty',0)} x {dims.get('tx',0)}"
     else:
-        dim_str = f"{dims.get('tx',0)}x{dims.get('profondeur',0)}"
+        dim_str = f"{dims.get('tx',0)} x {dims.get('profondeur',0)}"
         
     mousse_type = config['options'].get('type_mousse', 'HR35')
     
-    # Textes Oui/Non/Avec/Sans
     dossier_txt = 'Avec' if config['options'].get('dossier_bas') else 'Sans'
     acc_txt = 'Oui' if (config['options'].get('acc_left') or config['options'].get('acc_right')) else 'Non'
 
-    # Bloc technique
-    infos_techniques = [
+    # Liste des informations techniques (une par ligne)
+    lignes_info = [
         f"<b>Dimensions:</b> {dim_str} cm",
         f"<b>Confort:</b> {mousse_type}",
-        f"<b>Dossiers:</b> {dossier_txt} &nbsp;&nbsp; | &nbsp;&nbsp; <b>Accoudoirs:</b> {acc_txt}"
+        f"<b>Dossiers:</b> {dossier_txt}",
+        f"<b>Accoudoirs:</b> {acc_txt}"
     ]
     
-    # Bloc Client
+    # Ajout informations Client
     client = config['client']
-    infos_client = []
-    if client['nom']: infos_client.append(f"<b>Nom:</b> {client['nom']}")
-    if client['email']: infos_client.append(f"<b>Email:</b> {client['email']}")
+    if client['nom']: 
+        lignes_info.append(f"<b>Nom:</b> {client['nom']}")
+    if client['email']: 
+        lignes_info.append(f"<b>Email:</b> {client['email']}")
     
-    full_header_text = " &nbsp; | &nbsp; ".join(infos_techniques)
-    if infos_client:
-        full_header_text += "<br/><br/>" + " &nbsp; - &nbsp; ".join(infos_client)
-        
+    # On joint tout avec des sauts de ligne HTML <br/>
+    full_header_text = "<br/>".join(lignes_info)
     elements.append(Paragraph(full_header_text, header_info_style))
     
-    # --- GESTION DYNAMIQUE DES DESCRIPTIONS DE MOUSSE ---
+    # Description mousse (Gestion dynamique)
     descriptions_mousse = {
         'D25': "La mousse D25 est une mousse polyuréthane de 25kg/m3. Elle est très ferme, parfaite pour les habitués des banquettes marocaines classiques.",
         'D30': "La mousse D30 est une mousse polyuréthane de 30kg/m3. Elle est ultra ferme, idéale pour ceux qui recherchent un canapé très ferme.",
         'HR35': "La mousse HR35 est une mousse haute résilience de 35kg/m3. Elle est semi ferme confortable, parfaite pour les adeptes des salons confortables.<br/>Les mousses haute résilience reprennent rapidement leur forme initiale et donc limitent l’affaissement dans le temps.",
         'HR45': "La mousse HR45 est une mousse haute résilience de 45kg/m3. Elle est ferme confortable, parfaite pour les adeptes des salons confortables mais pas trop moelleux.<br/>Les mousses haute résilience reprennent rapidement leur forme initiale et donc limitent l’affaissement dans le temps."
     }
-    
-    # Récupération du texte correspondant, ou HR35 par défaut
     texte_mousse = descriptions_mousse.get(mousse_type, descriptions_mousse['HR35'])
     
     elements.append(Spacer(1, 0.2*cm))
     elements.append(Paragraph(f"<i>{texte_mousse}</i>", header_info_style))
-    
     elements.append(Spacer(1, 0.3*cm))
-
+    
     # =================== 3. SCHÉMA (AUTO-REDIMENSIONNÉ) ===================
     if schema_image:
         try:
