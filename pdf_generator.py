@@ -78,7 +78,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     
     footer_style = ParagraphStyle(
         'FooterStyle', parent=styles['Normal'], fontSize=12, textColor=colors.black, 
-        alignment=TA_CENTER, spaceBefore=5, fontName=BASE_FONT
+        alignment=TA_CENTER, spaceBefore=10, fontName=BASE_FONT
     )
 
     # --- FONCTION INTERNE POUR DESSINER LE PIED DE PAGE FIXE ---
