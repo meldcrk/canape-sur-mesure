@@ -1,6 +1,6 @@
 """
 Application Streamlit pour générer des devis de canapés sur mesure
-Compatible Streamlit Cloud - Utilise canapematplot.py
+Design style 'Lovable/Shadcn' - Utilise canapematplot.py
 """
 
 import streamlit as st
@@ -19,375 +19,422 @@ from canapematplot import (
     render_Simple1
 )
 
-# Configuration de la page
+# -----------------------------------------------------------------------------
+# 1. CONFIGURATION DE LA PAGE & STYLE CSS
+# -----------------------------------------------------------------------------
+
 st.set_page_config(
-    page_title="Générateur de Devis Canapés",
+    page_title="Configurateur Canapé Marocain",
     page_icon="🛋️",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
+
+# Injection de CSS pour imiter le style Lovable (Shadcn UI)
+st.markdown("""
+<style>
+    /* Import de la police Inter */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    /* Global Reset & Font */
+    html, body, [class*="css"] {
+        font-family: 'Inter', sans-serif;
+        color: #0f172a;
+    }
+    
+    /* Fond général légèrement grisé pour faire ressortir les cartes */
+    .stApp {
+        background-color: #f8fafc;
+    }
+
+    /* Titres */
+    h1, h2, h3 {
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        color: #0f172a;
+    }
+    h1 { margin-bottom: 1.5rem !important; }
+
+    /* Input Fields Styling - Style Shadcn */
+    .stTextInput input, .stNumberInput input, .stSelectbox div[data-baseweb="select"] > div {
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        color: #0f172a;
+        height: 42px;
+    }
+    
+    /* Focus states */
+    .stTextInput input:focus, .stNumberInput input:focus {
+        border-color: #000000;
+        box-shadow: none;
+    }
+
+    /* Boutons Primaires (Noir/Blanc comme Shadcn) */
+    div.stButton > button[kind="primary"] {
+        background-color: #0f172a;
+        color: white;
+        border-radius: 0.5rem;
+        border: none;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        transition: all 0.2s;
+        height: 45px;
+    }
+    div.stButton > button[kind="primary"]:hover {
+        background-color: #334155;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Boutons Secondaires (Outline) */
+    div.stButton > button[kind="secondary"] {
+        background-color: white;
+        color: #0f172a;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        height: 45px;
+    }
+    div.stButton > button[kind="secondary"]:hover {
+        background-color: #f1f5f9;
+        border-color: #cbd5e1;
+    }
+
+    /* Cards (Containers with border) styling enhancements */
+    [data-testid="stVerticalBlockBorderWrapper"] {
+        background-color: white;
+        border-radius: 0.75rem;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Metrics Styling */
+    div[data-testid="stMetricValue"] {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #0f172a;
+    }
+    div[data-testid="stMetricLabel"] {
+        font-size: 0.875rem;
+        color: #64748b;
+    }
+
+    /* Checkbox Styling */
+    .stCheckbox label {
+        color: #334155;
+        font-weight: 500;
+    }
+
+    /* Hide default Streamlit elements */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+</style>
+""", unsafe_allow_html=True)
+
+# -----------------------------------------------------------------------------
+# 2. FONCTION GENERATION SCHEMA (Inchangée)
+# -----------------------------------------------------------------------------
 
 def generer_schema_canape(type_canape, tx, ty, tz, profondeur, 
                           acc_left, acc_right, acc_bas,
                           dossier_left, dossier_bas, dossier_right,
                           meridienne_side, meridienne_len, coussins="auto"):
-    """
-    Génère le schéma du canapé en utilisant les fonctions de canapematplot.py
-    et retourne une figure matplotlib
-    """
     fig = plt.figure(figsize=(12, 8))
     
     try:
         if "Simple" in type_canape:
-            render_Simple1(
-                tx=tx,
-                profondeur=profondeur,
-                dossier=dossier_bas,
-                acc_left=acc_left,
-                acc_right=acc_right,
-                meridienne_side=meridienne_side,
-                meridienne_len=meridienne_len,
-                coussins=coussins,
-                window_title="Canapé Simple"
-            )
-            
+            render_Simple1(tx=tx, profondeur=profondeur, dossier=dossier_bas,
+                acc_left=acc_left, acc_right=acc_right,
+                meridienne_side=meridienne_side, meridienne_len=meridienne_len,
+                coussins=coussins, window_title="Canapé Simple")
         elif "L - Sans Angle" in type_canape:
-            render_LNF(
-                tx=tx,
-                ty=ty,
-                profondeur=profondeur,
-                dossier_left=dossier_left,
-                dossier_bas=dossier_bas,
-                acc_left=acc_left,
-                acc_bas=acc_bas,
-                meridienne_side=meridienne_side,
-                meridienne_len=meridienne_len,
-                coussins=coussins,
-                variant="auto",
-                window_title="Canapé L - Sans Angle"
-            )
-            
+            render_LNF(tx=tx, ty=ty, profondeur=profondeur,
+                dossier_left=dossier_left, dossier_bas=dossier_bas,
+                acc_left=acc_left, acc_bas=acc_bas,
+                meridienne_side=meridienne_side, meridienne_len=meridienne_len,
+                coussins=coussins, variant="auto", window_title="L - Sans Angle")
         elif "L - Avec Angle" in type_canape:
-            render_LF_variant(
-                tx=tx,
-                ty=ty,
-                profondeur=profondeur,
-                dossier_left=dossier_left,
-                dossier_bas=dossier_bas,
-                acc_left=acc_left,
-                acc_bas=acc_bas,
-                meridienne_side=meridienne_side,
-                meridienne_len=meridienne_len,
-                coussins=coussins,
-                window_title="Canapé L - Avec Angle"
-            )
-            
+            render_LF_variant(tx=tx, ty=ty, profondeur=profondeur,
+                dossier_left=dossier_left, dossier_bas=dossier_bas,
+                acc_left=acc_left, acc_bas=acc_bas,
+                meridienne_side=meridienne_side, meridienne_len=meridienne_len,
+                coussins=coussins, window_title="L - Avec Angle")
         elif "U - Sans Angle" in type_canape:
-            render_U(
-                tx=tx,
-                ty_left=ty,
-                tz_right=tz,
-                profondeur=profondeur,
-                dossier_left=dossier_left,
-                dossier_bas=dossier_bas,
-                dossier_right=dossier_right,
-                acc_left=acc_left,
-                acc_bas=acc_bas,
-                acc_right=acc_right,
-                coussins=coussins,
-                variant="auto",
-                window_title="Canapé U - Sans Angle"
-            )
-            
+            render_U(tx=tx, ty_left=ty, tz_right=tz, profondeur=profondeur,
+                dossier_left=dossier_left, dossier_bas=dossier_bas, dossier_right=dossier_right,
+                acc_left=acc_left, acc_bas=acc_bas, acc_right=acc_right,
+                coussins=coussins, variant="auto", window_title="U - Sans Angle")
         elif "U - 1 Angle" in type_canape:
-            # Par défaut utiliser v1, mais vous pouvez ajouter un sélecteur
-            render_U1F_v1(
-                tx=tx,
-                ty=ty,
-                tz=tz,
-                profondeur=profondeur,
-                dossier_left=dossier_left,
-                dossier_bas=dossier_bas,
-                dossier_right=dossier_right,
-                acc_left=acc_left,
-                acc_right=acc_right,
-                meridienne_side=meridienne_side,
-                meridienne_len=meridienne_len,
-                coussins=coussins,
-                window_title="Canapé U - 1 Angle"
-            )
-            
+            render_U1F_v1(tx=tx, ty=ty, tz=tz, profondeur=profondeur,
+                dossier_left=dossier_left, dossier_bas=dossier_bas, dossier_right=dossier_right,
+                acc_left=acc_left, acc_right=acc_right,
+                meridienne_side=meridienne_side, meridienne_len=meridienne_len,
+                coussins=coussins, window_title="U - 1 Angle")
         elif "U - 2 Angles" in type_canape:
-            render_U2f_variant(
-                tx=tx,
-                ty_left=ty,
-                tz_right=tz,
-                profondeur=profondeur,
-                dossier_left=dossier_left,
-                dossier_bas=dossier_bas,
-                dossier_right=dossier_right,
-                acc_left=acc_left,
-                acc_bas=acc_bas,
-                acc_right=acc_right,
-                meridienne_side=meridienne_side,
-                meridienne_len=meridienne_len,
-                coussins=coussins,
-                window_title="Canapé U - 2 Angles"
-            )
+            render_U2f_variant(tx=tx, ty_left=ty, tz_right=tz, profondeur=profondeur,
+                dossier_left=dossier_left, dossier_bas=dossier_bas, dossier_right=dossier_right,
+                acc_left=acc_left, acc_bas=acc_bas, acc_right=acc_right,
+                meridienne_side=meridienne_side, meridienne_len=meridienne_len,
+                coussins=coussins, window_title="U - 2 Angles")
         
-        # Récupérer la figure actuelle créée par matplotlib
         fig = plt.gcf()
         return fig
         
     except Exception as e:
         plt.close()
-        raise Exception(f"Erreur lors de la génération du schéma : {str(e)}")
+        raise Exception(f"Erreur schéma: {str(e)}")
 
-# Titre principal
-st.title("🛋️ Générateur de Devis Canapés Sur Mesure")
-st.markdown("---")
+# -----------------------------------------------------------------------------
+# 3. INTERFACE UTILISATEUR
+# -----------------------------------------------------------------------------
 
-# FORMULAIRE PRINCIPAL
-col1, col2 = st.columns([1, 2])
+st.markdown("# Configurateur de Canapé")
+st.markdown("Créez votre canapé sur mesure et obtenez un devis immédiat.")
+st.markdown("<br>", unsafe_allow_html=True)
 
-with col1:
-    st.header("📋 Configuration du Canapé")
+# Layout principal : 55% Config (Gauche) / 45% Résultat (Droite)
+col_config, col_preview = st.columns([1.1, 0.9], gap="large")
+
+# --- COLONNE GAUCHE : CONFIGURATION ---
+with col_config:
     
-    # TYPE DE CANAPÉ
-    st.subheader("1. Type de Canapé")
-    type_canape = st.selectbox(
-        "Sélectionnez le type",
-        ["Simple (S)", "L - Sans Angle", "L - Avec Angle (LF)", 
-         "U - Sans Angle", "U - 1 Angle (U1F)", "U - 2 Angles (U2F)"],
-        help="Choisissez la forme du canapé"
-    )
-    
-    # DIMENSIONS
-    st.subheader("2. Dimensions (en cm)")
-    
-    if "Simple" in type_canape:
-        tx = st.number_input("Largeur (Tx)", min_value=100, max_value=600, value=280, step=10)
-        ty = tz = None
-    elif "L" in type_canape:
-        tx = st.number_input("Largeur bas (Tx)", min_value=100, max_value=600, value=350, step=10)
-        ty = st.number_input("Hauteur gauche (Ty)", min_value=100, max_value=600, value=250, step=10)
-        tz = None
-    else:  # U
-        tx = st.number_input("Largeur bas (Tx)", min_value=100, max_value=600, value=450, step=10)
-        ty = st.number_input("Hauteur gauche (Ty)", min_value=100, max_value=600, value=300, step=10)
-        tz = st.number_input("Hauteur droite (Tz)", min_value=100, max_value=600, value=280, step=10)
-    
-    profondeur = st.number_input("Profondeur", min_value=50, max_value=120, value=70, step=5)
-    
-    # ACCOUDOIRS
-    st.subheader("3. Accoudoirs")
-    acc_left = st.checkbox("Accoudoir Gauche", value=True)
-    acc_right = st.checkbox("Accoudoir Droit", value=True)
-    if "L" not in type_canape and "Simple" not in type_canape:
-        acc_bas = st.checkbox("Accoudoir Bas", value=True)
-    else:
-        acc_bas = st.checkbox("Accoudoir Bas", value=True) if "L" in type_canape else False
-    
-    # DOSSIERS
-    st.subheader("4. Dossiers")
-    dossier_left = st.checkbox("Dossier Gauche", value=True) if "Simple" not in type_canape else False
-    dossier_bas = st.checkbox("Dossier Bas", value=True)
-    dossier_right = st.checkbox("Dossier Droit", value=True) if ("U" in type_canape) else False
-    
-    # MÉRIDIENNE
-    st.subheader("5. Méridienne (optionnel)")
-    has_meridienne = st.checkbox("Ajouter une méridienne")
-    if has_meridienne:
-        meridienne_options = ["Gauche (g)", "Droite (d)"]
-        if "L" in type_canape or "U" in type_canape:
-            meridienne_options.append("Bas (b)")
+    # SECTION 1: BASE
+    with st.container(border=True):
+        st.markdown("### 1. Structure & Dimensions")
         
-        meridienne_side = st.selectbox("Côté", meridienne_options)
-        meridienne_len = st.number_input("Longueur (cm)", min_value=30, max_value=200, value=100, step=10)
-        meridienne_side = meridienne_side[0].lower()
-    else:
+        type_canape = st.selectbox(
+            "Modèle",
+            ["Simple (S)", "L - Sans Angle", "L - Avec Angle (LF)", 
+             "U - Sans Angle", "U - 1 Angle (U1F)", "U - 2 Angles (U2F)"]
+        )
+        
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            # Adaptation dynamique des labels
+            label_tx = "Largeur (Tx)"
+            if "L" in type_canape or "U" in type_canape: label_tx = "Largeur Bas (Tx)"
+            tx = st.number_input(label_tx, 100, 600, 280 if "Simple" in type_canape else 350, 10)
+        
+        with c2:
+            ty = tz = None
+            if "L" in type_canape:
+                ty = st.number_input("Retour Gauche (Ty)", 100, 600, 250, 10)
+            elif "U" in type_canape:
+                ty = st.number_input("Retour Gauche (Ty)", 100, 600, 300, 10)
+            else:
+                st.markdown("<div style='height: 42px; display: flex; align-items: center; color: #cbd5e1;'>-</div>", unsafe_allow_html=True)
+
+        with c3:
+            if "U" in type_canape:
+                tz = st.number_input("Retour Droit (Tz)", 100, 600, 280, 10)
+            else:
+                st.markdown("<div style='height: 42px; display: flex; align-items: center; color: #cbd5e1;'>-</div>", unsafe_allow_html=True)
+                
+        profondeur = st.slider("Profondeur d'assise (cm)", 50, 120, 70, 5)
+
+    # SECTION 2: COMPOSANTS
+    with st.container(border=True):
+        st.markdown("### 2. Accoudoirs & Dossiers")
+        
+        ac1, ac2 = st.columns(2)
+        with ac1:
+            st.markdown("**Accoudoirs**")
+            acc_left = st.checkbox("Gauche", value=True)
+            acc_right = st.checkbox("Droit", value=True)
+            
+            show_acc_bas = True if "L" in type_canape else ("Simple" not in type_canape)
+            if show_acc_bas:
+                acc_bas = st.checkbox("Bas (Retour)", value=True)
+            else:
+                acc_bas = False
+
+        with ac2:
+            st.markdown("**Dossiers**")
+            dossier_bas = st.checkbox("Bas (Central)", value=True)
+            
+            dossier_left = False
+            if "Simple" not in type_canape:
+                dossier_left = st.checkbox("Gauche", value=True)
+                
+            dossier_right = False
+            if "U" in type_canape:
+                dossier_right = st.checkbox("Droit", value=True)
+
+    # SECTION 3: MÉRIDIENNE
+    with st.container(border=True):
+        st.markdown("### 3. Méridienne")
+        has_meridienne = st.checkbox("Ajouter une méridienne (ouverture sans dossier)")
+        
         meridienne_side = None
         meridienne_len = 0
-    
-    # COUSSINS
-    st.subheader("6. Coussins")
-    type_coussins = st.selectbox(
-        "Type de coussins",
-        ["auto", "65", "80", "90", "valise", "p", "g"],
-        help="Auto = optimisation automatique, valise = tailles variables optimisées"
-    )
-    
-    # MOUSSE ET TISSU
-    st.subheader("7. Mousse & Tissu")
-    type_mousse = st.selectbox("Type de mousse", ["D25", "D30", "HR35", "HR45"])
-    epaisseur = st.number_input("Épaisseur (cm)", min_value=15, max_value=35, value=25, step=5)
-    
-    # OPTIONS SUPPLÉMENTAIRES
-    st.subheader("8. Options")
-    nb_coussins_deco = st.number_input("Coussins déco", min_value=0, max_value=10, value=0)
-    nb_traversins_supp = st.number_input("Traversins supplémentaires", min_value=0, max_value=5, value=0)
-    has_surmatelas = st.checkbox("Surmatelas")
-    
-    # INFORMATIONS CLIENT
-    st.subheader("9. Informations Client")
-    nom_client = st.text_input("Nom du client")
-    email_client = st.text_input("Email (optionnel)")
+        
+        if has_meridienne:
+            m1, m2 = st.columns(2)
+            with m1:
+                opts = ["Gauche (g)", "Droite (d)"]
+                if "L" in type_canape or "U" in type_canape:
+                    opts.append("Bas (b)")
+                mer_sel = st.selectbox("Emplacement", opts)
+                meridienne_side = mer_sel[0].lower()
+            with m2:
+                meridienne_len = st.number_input("Longueur ouverture (cm)", 30, 200, 100, 10)
 
-# COLONNE DROITE - APERÇU
-with col2:
-    st.header("👁️ Aperçu du Canapé")
+    # SECTION 4: CONFORT & FINITIONS
+    with st.container(border=True):
+        st.markdown("### 4. Confort & Finitions")
+        
+        cf1, cf2 = st.columns(2)
+        with cf1:
+            type_coussins = st.selectbox("Type de coussins", ["auto", "65", "80", "90", "valise", "p", "g"])
+            type_mousse = st.selectbox("Qualité Mousse", ["HR35", "HR45", "D30", "D25"])
+        with cf2:
+            epaisseur = st.number_input("Épaisseur Assise (cm)", 15, 35, 25, 5)
+            
+            # Options groupées dans un expander pour gagner de la place
+            with st.expander("Options supplémentaires"):
+                nb_coussins_deco = st.number_input("Coussins déco", 0, 10, 0)
+                nb_traversins_supp = st.number_input("Traversins extra", 0, 5, 0)
+                has_surmatelas = st.checkbox("Ajouter Surmatelas")
+
+    # SECTION 5: CLIENT
+    with st.container(border=True):
+        st.markdown("### 5. Vos Coordonnées")
+        cl1, cl2 = st.columns(2)
+        with cl1:
+            nom_client = st.text_input("Nom complet")
+        with cl2:
+            email_client = st.text_input("Email (pour le dossier)")
+
+# --- COLONNE DROITE : PRÉVISUALISATION & PRIX ---
+with col_preview:
     
-    # Bouton de génération
-    if st.button("🎨 Générer l'Aperçu", type="primary", use_container_width=True):
-        with st.spinner("Génération du schéma en cours..."):
-            try:
-                # Générer le schéma
-                fig = generer_schema_canape(
-                    type_canape=type_canape,
-                    tx=tx, ty=ty, tz=tz,
-                    profondeur=profondeur,
-                    acc_left=acc_left,
-                    acc_right=acc_right,
-                    acc_bas=acc_bas,
-                    dossier_left=dossier_left,
-                    dossier_bas=dossier_bas,
-                    dossier_right=dossier_right,
-                    meridienne_side=meridienne_side,
-                    meridienne_len=meridienne_len,
-                    coussins=type_coussins
-                )
-                
-                st.pyplot(fig)
-                plt.close()
-                
-                st.success("✅ Schéma généré avec succès !")
-                
-                # Calcul du prix
-                prix_details = calculer_prix_total(
-                    type_canape=type_canape,
-                    tx=tx, ty=ty, tz=tz,
-                    profondeur=profondeur,
-                    type_coussins=type_coussins,
-                    type_mousse=type_mousse,
-                    epaisseur=epaisseur,
-                    acc_left=acc_left,
-                    acc_right=acc_right,
-                    acc_bas=acc_bas,
-                    dossier_left=dossier_left,
-                    dossier_bas=dossier_bas,
-                    dossier_right=dossier_right,
-                    nb_coussins_deco=nb_coussins_deco,
-                    nb_traversins_supp=nb_traversins_supp,
-                    has_surmatelas=has_surmatelas,
-                    has_meridienne=has_meridienne
-                )
-                
-                # Affichage des prix
-                st.markdown("### 📊 Détails du Devis")
-                
-                col_prix1, col_prix2 = st.columns(2)
-                
-                with col_prix1:
-                    st.markdown("**Composants :**")
-                    for item, prix in prix_details['details'].items():
-                        st.write(f"• {item}: {prix}€")
-                
-                with col_prix2:
-                    st.markdown("**Récapitulatif :**")
-                    st.metric("Sous-total", f"{prix_details['sous_total']}€")
-                    st.metric("TVA (20%)", f"{prix_details['tva']}€")
-                
-                st.markdown("---")
-                st.markdown(f"### 💰 **TOTAL TTC : {prix_details['total_ttc']}€**")
-                
-            except Exception as e:
-                st.error(f"❌ Erreur lors de la génération : {str(e)}")
-                st.exception(e)  # Affiche la trace complète pour le debug
-    
-    # Bouton PDF
-    st.markdown("---")
-    if st.button("📄 Générer le Devis PDF", use_container_width=True):
-        if not nom_client:
-            st.warning("⚠️ Veuillez renseigner le nom du client")
-        else:
-            with st.spinner("Création du PDF en cours..."):
+    # La "Carte" de résultat collante
+    with st.container(border=True):
+        st.markdown("### 👁️ Aperçu et Devis")
+        
+        # Bouton de génération principale
+        if st.button("🔄 Mettre à jour l'aperçu", key="generate", type="primary", use_container_width=True):
+            with st.spinner("Calcul en cours..."):
                 try:
-                    # 1. Régénérer le schéma spécifiquement pour le PDF
-                    # On le fait ici pour être sûr d'avoir la dernière version configurée
+                    # 1. Générer le schéma
                     fig = generer_schema_canape(
-                        type_canape=type_canape,
-                        tx=tx, ty=ty, tz=tz,
-                        profondeur=profondeur,
-                        acc_left=acc_left,
-                        acc_right=acc_right,
-                        acc_bas=acc_bas,
-                        dossier_left=dossier_left,
-                        dossier_bas=dossier_bas,
-                        dossier_right=dossier_right,
-                        meridienne_side=meridienne_side,
-                        meridienne_len=meridienne_len,
-                        coussins=type_coussins
+                        type_canape, tx, ty, tz, profondeur,
+                        acc_left, acc_right, acc_bas,
+                        dossier_left, dossier_bas, dossier_right,
+                        meridienne_side, meridienne_len, type_coussins
                     )
                     
-                    # 2. Sauvegarder la figure dans un buffer mémoire (BytesIO)
-                    img_buffer = BytesIO()
-                    fig.savefig(img_buffer, format='png', bbox_inches='tight', dpi=150)
-                    img_buffer.seek(0) # Remettre le curseur au début du fichier
-                    plt.close(fig) # Fermer la figure pour libérer la mémoire
+                    # Affichage propre du matplotlib
+                    st.pyplot(fig, use_container_width=True)
+                    plt.close()
                     
-                    # 3. Configuration (Code existant)
+                    # 2. Calculer le prix
+                    prix_details = calculer_prix_total(
+                        type_canape, tx, ty, tz, profondeur,
+                        type_coussins, type_mousse, epaisseur,
+                        acc_left, acc_right, acc_bas,
+                        dossier_left, dossier_bas, dossier_right,
+                        nb_coussins_deco, nb_traversins_supp,
+                        has_surmatelas, has_meridienne
+                    )
+                    
+                    # Stockage session state pour le PDF plus tard
+                    st.session_state['prix_details'] = prix_details
+                    st.session_state['last_fig'] = fig # Note: fig object might not pickle well, usually regen for PDF
+
+                    st.markdown("---")
+                    
+                    # Affichage Prix Style "Facture"
+                    p1, p2 = st.columns([2, 1])
+                    with p1:
+                        st.markdown("**Total HT**")
+                        st.markdown("TVA (20%)")
+                    with p2:
+                        st.markdown(f"<div style='text-align:right'>{prix_details['prix_ht']:.2f} €</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div style='text-align:right'>{prix_details['tva']:.2f} €</div>", unsafe_allow_html=True)
+                    
+                    st.markdown("---")
+                    
+                    # Gros Total
+                    t1, t2 = st.columns([1, 2])
+                    with t1:
+                        st.markdown("### Total TTC")
+                    with t2:
+                        st.markdown(f"<h2 style='text-align:right; color:#0f172a; margin:0;'>{prix_details['total_ttc']:.2f} €</h2>", unsafe_allow_html=True)
+                    
+                    # Indicateurs Marge (Discrets)
+                    with st.expander("Données internes (Marge)"):
+                        m1, m2 = st.columns(2)
+                        m1.metric("Coût Revient", f"{prix_details['cout_revient_ht']} €")
+                        m2.metric("Marge", f"{prix_details['marge_ht']} €", f"{prix_details['taux_marge']}%")
+
+                except Exception as e:
+                    st.error(f"Oups ! Une erreur dans la configuration : {str(e)}")
+
+        else:
+            # Placeholder si pas encore généré
+            st.info("Cliquez sur 'Mettre à jour' pour voir votre configuration.")
+            st.markdown("""
+                <div style="background-color: #f1f5f9; border-radius: 8px; height: 300px; display: flex; align-items: center; justify-content: center; color: #94a3b8;">
+                    Aperçu du schéma ici
+                </div>
+            """, unsafe_allow_html=True)
+
+    # Bouton PDF (Séparé pour le style)
+    if st.button("📄 Télécharger le Devis PDF", type="secondary", use_container_width=True):
+        if not nom_client:
+            st.toast("⚠️ Veuillez renseigner le nom du client à gauche.", icon="⚠️")
+        else:
+            with st.spinner("Génération du PDF..."):
+                try:
+                    # Régénération propre pour le PDF
+                    fig_pdf = generer_schema_canape(
+                        type_canape, tx, ty, tz, profondeur,
+                        acc_left, acc_right, acc_bas,
+                        dossier_left, dossier_bas, dossier_right,
+                        meridienne_side, meridienne_len, type_coussins
+                    )
+                    img_buffer = BytesIO()
+                    fig_pdf.savefig(img_buffer, format='png', bbox_inches='tight', dpi=150)
+                    img_buffer.seek(0)
+                    plt.close(fig_pdf)
+                    
+                    # Recalcul pour être sûr
+                    prix_final = calculer_prix_total(
+                        type_canape, tx, ty, tz, profondeur,
+                        type_coussins, type_mousse, epaisseur,
+                        acc_left, acc_right, acc_bas,
+                        dossier_left, dossier_bas, dossier_right,
+                        nb_coussins_deco, nb_traversins_supp,
+                        has_surmatelas, has_meridienne
+                    )
+                    
                     config = {
                         'type_canape': type_canape,
                         'dimensions': {'tx': tx, 'ty': ty, 'tz': tz, 'profondeur': profondeur},
                         'options': {
-                            'acc_left': acc_left,
-                            'acc_right': acc_right,
-                            'acc_bas': acc_bas,
-                            'dossier_left': dossier_left,
-                            'dossier_bas': dossier_bas,
-                            'dossier_right': dossier_right,
-                            'meridienne_side': meridienne_side,
-                            'meridienne_len': meridienne_len,
-                            'type_coussins': type_coussins,
-                            'type_mousse': type_mousse,
-                            'epaisseur': epaisseur
+                            'acc_left': acc_left, 'acc_right': acc_right, 'acc_bas': acc_bas,
+                            'dossier_left': dossier_left, 'dossier_bas': dossier_bas, 'dossier_right': dossier_right,
+                            'meridienne_side': meridienne_side, 'meridienne_len': meridienne_len,
+                            'type_coussins': type_coussins, 'type_mousse': type_mousse, 'epaisseur': epaisseur
                         },
                         'client': {'nom': nom_client, 'email': email_client}
                     }
                     
-                    # 4. Calcul prix (Code existant)
-                    prix_details = calculer_prix_total(
-                        type_canape=type_canape, tx=tx, ty=ty, tz=tz,
-                        profondeur=profondeur, type_coussins=type_coussins,
-                        type_mousse=type_mousse, epaisseur=epaisseur,
-                        acc_left=acc_left, acc_right=acc_right, acc_bas=acc_bas,
-                        dossier_left=dossier_left, dossier_bas=dossier_bas,
-                        dossier_right=dossier_right, nb_coussins_deco=nb_coussins_deco,
-                        nb_traversins_supp=nb_traversins_supp,
-                        has_surmatelas=has_surmatelas, has_meridienne=has_meridienne
-                    )
-                    
-                    # 5. Génération PDF avec l'image (AJOUT de l'argument schema_image)
-                    pdf_buffer = generer_pdf_devis(config, prix_details, schema_image=img_buffer)
+                    pdf_data = generer_pdf_devis(config, prix_final, schema_image=img_buffer)
                     
                     st.download_button(
-                        label="⬇️ Télécharger le Devis PDF",
-                        data=pdf_buffer,
-                        file_name=f"devis_canape_{nom_client.replace(' ', '_')}.pdf",
-                        mime="application/pdf"
+                        label="📥 Cliquez pour télécharger",
+                        data=pdf_data,
+                        file_name=f"Devis_{nom_client.replace(' ', '_')}.pdf",
+                        mime="application/pdf",
+                        type="primary",
+                        use_container_width=True
                     )
-                    
-                    st.success("✅ PDF généré avec succès !")
+                    st.balloons()
                     
                 except Exception as e:
-                    st.error(f"❌ Erreur : {str(e)}")
-                    st.exception(e)
-
-# FOOTER
-st.markdown("---")
-st.markdown("""
-<div style='text-align: center; color: gray;'>
-    <p>🛋️ Générateur de Devis Canapés Sur Mesure v2.0</p>
-    <p>Utilise canapematplot.py pour la génération de schémas</p>
-</div>
-""", unsafe_allow_html=True)
-
+                    st.error(f"Erreur PDF: {str(e)}")
