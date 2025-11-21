@@ -48,7 +48,7 @@ st.markdown("""
     }
 
     /* Titres */
-    h1, h2, h3 {
+    h1, h2, h3, p {
         font-weight: 700;
         letter-spacing: -0.025em;
         color: black !important;
