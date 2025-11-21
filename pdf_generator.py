@@ -53,7 +53,7 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
 
         # Colonne Droite
         col_droite = []
-        col_droite.append(Paragraph("Détail des cotations du canapé:", column_header_style))
+        col_droite.append(Paragraph("Détail des cotations du canapé:", column_header_style, alignment=TA_RIGHT))
         
         h_mousse = config['options'].get('epaisseur', 25)
         h_assise = 46 if h_mousse > 20 else 40
