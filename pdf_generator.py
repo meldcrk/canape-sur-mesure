@@ -27,9 +27,9 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
     price_style = ParagraphStyle('PriceStyle', parent=styles['Heading2'], fontSize=16, alignment=TA_CENTER, fontName='Helvetica', textColor=colors.black, spaceBefore=10, spaceAfter=10)
     
     # Styles pour le pied de page
-    column_header_style = ParagraphStyle('ColumnHeaderStyle', parent=styles['Normal'], fontSize=9, fontName='Helvetica-Bold', alignment=TA_LEFT, spaceAfter=2)
-    detail_style = ParagraphStyle('DetailStyle', parent=styles['Normal'], fontSize=8, leading=10, textColor=colors.black, alignment=TA_LEFT)
-    footer_style = ParagraphStyle('FooterStyle', parent=styles['Normal'], fontSize=9, textColor=colors.black, alignment=TA_CENTER)
+    column_header_style = ParagraphStyle('ColumnHeaderStyle', parent=styles['Normal'], fontSize=10, fontName='Helvetica-Bold', alignment=TA_LEFT, spaceAfter=2)
+    detail_style = ParagraphStyle('DetailStyle', parent=styles['Normal'], fontSize=10, leading=10, textColor=colors.black, alignment=TA_LEFT)
+    footer_style = ParagraphStyle('FooterStyle', parent=styles['Normal'], fontSize=10, textColor=colors.black, alignment=TA_CENTER)
 
     # --- FONCTION INTERNE POUR DESSINER LE PIED DE PAGE FIXE ---
     def draw_footer(canvas, doc):
@@ -39,21 +39,21 @@ def generer_pdf_devis(config, prix_details, schema_image=None):
         
         # Colonne Gauche
         col_gauche = []
-        col_gauche.append(Paragraph("Ce que le tarif comprend :", column_header_style))
+        col_gauche.append(Paragraph("Il faut savoir que le tarif comprend :", column_header_style))
         inclus_items = [
             "Livraison bas d'immeuble",
             "Fabrication 100% artisanale France",
-            "Choix du tissu n'impacte pas le devis",
-            "Paiement 2 à 6 fois sans frais",
-            "Livraison 5 à 7 semaines",
-            "Housses déhoussables"
+            "Choix du tissu qui n'impacte pas le devis",
+            "Possibilité de payer en 2 à 6 fois sans frais",
+            "Livraison en bas d'immeuble en 5 à 7 semaines",
+            "Housses de matelas et coussins déhoussables"
         ]
         for item in inclus_items:
             col_gauche.append(Paragraph(f"• {item}", detail_style))
 
         # Colonne Droite
         col_droite = []
-        col_droite.append(Paragraph("Détail des cotations :", column_header_style))
+        col_droite.append(Paragraph("Détail des cotations du canapé:", column_header_style))
         
         h_mousse = config['options'].get('epaisseur', 25)
         h_assise = 46 if h_mousse > 20 else 40
